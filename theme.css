@@ -77,8 +77,8 @@
   --m-ban: #d8cbe0 !important;
 }
 
-/* Dark mode is the default; light mode is opt-in via data-theme="light". */
-:root:not([data-theme='light']) {
+/* Light mode is the default; dark mode is opt-in via data-theme="dark". */
+:root[data-theme='dark'] {
   --theme-page: #242622;
   --theme-surface: #30332f;
   --theme-surface-alt: #3b3f3a;
@@ -105,7 +105,7 @@
   color-scheme: dark;
 }
 
-:root[data-theme='light'] {
+:root:not([data-theme='dark']) {
   color-scheme: light;
 }
 

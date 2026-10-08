@@ -66,12 +66,12 @@ if ($theme -notmatch 'header button:disabled' -or $theme -notmatch 'header butto
   throw 'Header disabled button contrast contract missing'
 }
 
-if ($theme -notmatch ':root:not\(\[data-theme=''light''\]\)' -or $theme -notmatch '--theme-page:\s*#2') {
-  throw 'Dark theme is not the default'
+if ($theme -notmatch ':root\[data-theme=''dark''\]' -or $theme -notmatch '--theme-page:\s*#f1eee9') {
+  throw 'Light theme is not the default'
 }
 
 $themeScript = Get-Content -Raw -Encoding UTF8 $themeScriptPath
-if ($themeScript -notmatch 'sql_spa_tools_theme' -or $themeScript -notmatch "saved === 'light'") {
+if ($themeScript -notmatch 'sql_spa_tools_theme' -or $themeScript -notmatch "saved === 'dark'") {
   throw 'Theme persistence contract missing'
 }
 

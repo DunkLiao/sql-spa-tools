@@ -29,15 +29,15 @@ function runTheme(saved) {
 }
 
 const first = runTheme(null);
-assert.equal(first.context.document.documentElement.dataset.theme, 'dark');
-first.click();
 assert.equal(first.context.document.documentElement.dataset.theme, 'light');
-assert.equal(first.button.textContent, '🌙 深色模式');
+first.click();
+assert.equal(first.context.document.documentElement.dataset.theme, 'dark');
+assert.equal(first.button.textContent, '☀️ 淺色模式');
 
-const restored = runTheme('light');
-assert.equal(restored.context.document.documentElement.dataset.theme, 'light');
-restored.click();
+const restored = runTheme('dark');
 assert.equal(restored.context.document.documentElement.dataset.theme, 'dark');
-assert.equal(restored.button.textContent, '☀️ 淺色模式');
+restored.click();
+assert.equal(restored.context.document.documentElement.dataset.theme, 'light');
+assert.equal(restored.button.textContent, '🌙 深色模式');
 
-console.log('Theme behavior passed: default dark, toggle, persistence');
+console.log('Theme behavior passed: default light, toggle, persistence');

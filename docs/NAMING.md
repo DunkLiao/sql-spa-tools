@@ -48,6 +48,7 @@ sql-spa-tools-<功能識別字>.html
 | SQL 個資清除 | `sql-spa-tools-pii-cleaner.html` |
 | SQL 檔案清冊 | `sql-spa-tools-catalog.html` |
 | SQL 欄位血緣分析 | `sql-spa-tools-column-lineage.html` |
+| SQLScriptManage | `sql-spa-tools-sqlscriptmanage.html` |
 
 ## 新增頁面
 

@@ -9,6 +9,7 @@
 - `index.html`
 - `sql-spa-tools-catalog.html`
 - `sql-spa-tools-column-lineage.html`
+- `sql-spa-tools-sqlscriptmanage.html`
 - `sql-spa-tools-oracle-formatter.html`
 - `sql-spa-tools-pii-cleaner.html`
 - `sql-spa-tools-sql-compare.html`
@@ -26,13 +27,13 @@
 
 ## 深／淺色模式
 
-- 預設模式為深色，頁面未設定 `data-theme` 時即使用深色 token。
+- 預設模式為淺色，頁面未設定 `data-theme` 時即使用淺色 token。
 - 每個頁面都有 `#themeToggle` 按鈕，可在深色與淺色之間切換。
 - 使用者選擇會寫入 `localStorage` 的 `sql_spa_tools_theme`。
-- 只有儲存值為 `light` 時使用淺色；其他值與首次開啟均回到深色。
+- 只有儲存值為 `dark` 時使用深色；其他值與首次開啟均回到淺色。
 - 切換行為由共用 [`theme.js`](../theme.js) 管理，不得在個別頁面重複實作。
 
-深色模式的核心 token 定義在 `theme.css` 的 `:root:not([data-theme='light'])`；淺色模式則使用 `:root[data-theme='light']` 的基準配色。
+深色模式的核心 token 定義在 `theme.css` 的 `:root[data-theme='dark']`；淺色模式則使用未設定深色主題時的基準配色。
 
 ## 核心色彩 token
 
@@ -169,10 +170,10 @@ node '.\tests\test-theme.js'
 
 - `theme.css` 是否存在且包含核心 token。
 - `theme.js` 是否存在且使用 `sql_spa_tools_theme` 儲存模式。
-- 6 個 HTML 是否引用 `theme.css`。
-- 6 個 HTML 是否都包含 `themeToggle` 與 `theme.js`。
-- 5 個工具頁面是否都包含 `home-link` 並指向 `index.html`。
-- 未設定主題時是否以深色 token 為預設。
+- 7 個 HTML 是否引用 `theme.css`。
+- 7 個 HTML 是否都包含 `themeToggle` 與 `theme.js`。
+- 6 個工具頁面是否都包含 `home-link` 並指向 `index.html`。
+- 未設定主題時是否以淺色 token 為預設。
 - 具有 CSP 的頁面是否允許同目錄樣式檔。
 - Formatter、Catalog、SQL Compare 的動態報表是否包含共用主題色。
 
