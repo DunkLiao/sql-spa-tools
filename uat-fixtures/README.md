@@ -9,7 +9,10 @@
 | `uat-utf16le.csv` | UTF-16 Little Endian | 編碼選「自動偵測 BOM」；Header 開啟 |
 | `uat-utf16be.csv` | UTF-16 Big Endian | 編碼選「自動偵測 BOM」；Header 開啟 |
 | `uat-no-header-utf8.tsv` | Tab 分隔且沒有欄位標題 | 編碼選「UTF-8」；欄位名稱模式選「自動產生欄位名稱」 |
+| `uat-large-100k-utf8.csv` | 100,000 筆、8 欄的效能與分塊輸出；含 UTF-8 BOM、繁體中文、前導零、布林值、日期及含逗號的引號欄位 | 編碼選「自動偵測 BOM」；Header 開啟；先用 SQLite 或 PostgreSQL，另切換 SQL Server 確認每塊最多 1,000 筆 |
 
 也請測試「啟用自訂欄位名稱」：勾選後輸入 `member_id, city, postal_code, score`，再按「套用自訂欄位名稱」載入無標題 TSV，確認欄位數量一致時可正常產生 SQL，數量不一致時會顯示錯誤。此選項預設不啟用。
 
 建議將資料表名稱設為 `uat_import_test`，並依序切換 PostgreSQL、MySQL、SQL Server、Oracle、SQLite，確認 DDL、DML、複製與下載內容均正常。
+
+大型檔案匯入後，確認資料列顯示 `100,000`、欄位數為 `8`，SQL 可完整預覽、複製及下載；SQL Server 的分塊數應為 `100`（每塊 1,000 列）。

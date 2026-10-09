@@ -15,6 +15,7 @@ SQL SPA Tools 是一組以瀏覽器執行的 Oracle SQL 工具集，包含格式
 - [SQL 欄位血緣分析器](#sql-欄位血緣分析器)
 - [SQLScriptManage](#sqlscriptmanage)
 - [Excel／CSV 轉 SQL](#excelcsv-轉-sql)
+- [Excel／CSV 轉 SQL CTE](#excelcsv-轉-sql-cte)
 - [資料安全與保存](#資料安全與保存)
 - [常見問題排除](#常見問題排除)
 - [維護者驗證](#維護者驗證)
@@ -68,6 +69,7 @@ flowchart TD
 | SQL 欄位血緣分析器 | 分析欄位來源、上下游關係與 CTE | SVG、PNG、CSV、JSON、Mermaid |
 | SQLScriptManage | 離線管理專案、SQL 腳本草稿與版本分支 | JSON 備份、SQL 檔案、版本歷程 |
 | Excel／CSV 轉 SQL | 將 CSV、TSV 或貼上的試算表資料轉成 SQL | DDL、批次 INSERT、`.sql` |
+| Excel／CSV 轉 SQL CTE | 將 CSV、TSV 或貼上的試算表資料轉成可查詢的 `WITH` CTE 虛擬資料表 | SQL 預覽、複製完整 SQL、`.sql` |
 
 ## Oracle SQL Formatter
 
@@ -172,6 +174,27 @@ flowchart TD
   E --> F[複製 SQL 或下載 .sql]
 ```
 
+## Excel／CSV 轉 SQL CTE
+
+此工具會把試算表資料整理成 `WITH` CTE 查詢，適合建立臨時測試資料或將小型資料集直接帶入查詢。支援 PostgreSQL、Microsoft SQL Server、MySQL 8.0.19+、Oracle 12c+、SQLite、DuckDB、Snowflake 與 BigQuery。
+
+1. 拖放或選擇 CSV／TSV／TXT 檔案，也可直接貼上 Excel 試算表資料；檔案超過 200 MB 時需先拆分。
+2. 選擇檔案編碼與欄位分隔符，並確認首列是否為欄位標題。支援自動偵測、UTF-8、Big5／CP950、Big5-HKSCS、UTF-16LE 與 UTF-16BE。
+3. 按「解析資料」，檢查欄位名稱與推論型態；需要時啟用自訂欄位名稱，並逐欄覆寫資料型態。
+4. 選擇資料庫方言、CTE 名稱及每個分塊列數；部分方言也可選擇「單一大型 VALUES」。調整完成後按「套用設定」。
+5. 檢查 CTE SQL 預覽與資料列、欄位、分塊統計，再按「複製完整 SQL」或「下載 .sql」。預覽過長時會省略中段，複製與下載仍會輸出完整 SQL。
+
+空值、空字串、`NULL`、`N/A`、`NA` 與 `nil` 會依欄位型態輸出為 SQL `NULL`。若數字欄位含有前導零識別碼，請將欄位型態覆寫為文字，避免依數字解讀。
+
+```mermaid
+flowchart TD
+  A[載入或貼上資料] --> B[選編碼 分隔符與標題列]
+  B --> C[解析並檢查欄位]
+  C --> D[設定方言 CTE 名稱與型態]
+  D --> E[套用並檢視輸出預覽]
+  E --> F[複製或下載 SQL]
+```
+
 ## 資料安全與保存
 
 - 工具是純前端離線頁面；SQL 內容與分析主要在目前瀏覽器分頁中處理，不會由本專案主動上傳到伺服器。
@@ -225,6 +248,7 @@ flowchart LR
 ```powershell
 node '.\tests\test-theme.js'
 node '.\tests\test-excel-csv-sql.js'
+node '.\tests\test-excel-csv-sql-cte.js'
 & '.\tests\validate-theme.ps1'
 & '.\tests\validate-index.ps1'
 & '.\tests\validate-home-links.ps1'
