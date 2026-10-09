@@ -44,7 +44,7 @@ assert.match(sqlite, /SELECT \* FROM cte_data;/);
 
 const sqlServer = core.generateCteSql({ rows, columns, dialect: 'mssql', cteName: 'cte_data', chunkSize: 1000 });
 assert.match(sqlServer, /\[User_ID\]/);
-assert.match(sqlServer, /WITH\s+cte_data_part_1\s*\("User_ID", "Full_Name"\) AS/i);
+assert.match(sqlServer, /WITH\s+cte_data_part_1\s*\(\[User_ID\], \[Full_Name\]\) AS/i);
 assert.match(sqlServer, /AS \(\s*SELECT[\s\S]*FROM \(VALUES[\s\S]*\) AS \[cte_values\]/);
 assert.match(core.generateCteSql({ rows: [['1', '王小明']], columns: [{ originalName: 'id', inferredType: 'INTEGER' }, { originalName: 'name', inferredType: 'TEXT' }], dialect: 'mssql' }), /N'王小明'/);
 assert.equal(core.normalizeChunkSize('mssql', 5000), 1000);

@@ -19,6 +19,7 @@ SQL SPA Tools 是一組以瀏覽器執行的 Oracle SQL 工具集，包含格式
 - [資料安全與保存](#資料安全與保存)
 - [常見問題排除](#常見問題排除)
 - [維護者驗證](#維護者驗證)
+- [CI 自動化測試](#ci-自動化測試)
 
 ## 快速開始
 
@@ -249,6 +250,7 @@ flowchart LR
 node '.\tests\test-theme.js'
 node '.\tests\test-excel-csv-sql.js'
 node '.\tests\test-excel-csv-sql-cte.js'
+node '.\tests\test-sqlscriptmanage.js'
 & '.\tests\validate-theme.ps1'
 & '.\tests\validate-index.ps1'
 & '.\tests\validate-home-links.ps1'
@@ -264,3 +266,33 @@ Windows PowerShell 讀取本文件時，請明確指定 UTF-8：
 ```
 
 設計規範與命名規範請參閱 [docs/THEME.md](docs/THEME.md) 與 [docs/NAMING.md](docs/NAMING.md)；所有網頁設計、主題引用與入口導覽都應遵循這兩份文件。
+
+## CI 自動化測試
+
+本專案在 GitHub 上以 Actions 自動執行回歸測試，設定檔為 [.github/workflows/regression-test.yml](.github/workflows/regression-test.yml)。
+
+### 觸發條件
+
+- `push`：任何分支的每次推送。
+- `pull_request`：建立或更新提取請求時。
+- `workflow_dispatch`：可在 GitHub 手動觸發。
+
+同一分支若同時有開啟中的提取請求，`push` 與 `pull_request` 會各執行一次，屬正常行為。
+
+### 執行內容
+
+| 工作項目 | 執行環境 | 內容 |
+| --- | --- | --- |
+| Node 22 JavaScript 測試 | `ubuntu-latest` | `test-theme.js`、`test-excel-csv-sql.js`、`test-excel-csv-sql-cte.js`、`test-sqlscriptmanage.js`，以及 `node --check theme.js` |
+| Windows PowerShell 驗證 | `windows-latest` | `validate-theme.ps1`、`validate-index.ps1`、`validate-home-links.ps1` |
+
+兩個工作會平行執行；每支測試各自一個步驟，失敗時可直接看出是哪一項。workflow 僅要求 `permissions: contents: read`，不會寫入倉儲，也不需要安裝任何 npm 套件。
+
+### 查看與手動執行
+
+1. 開啟 GitHub 專案頁面，切換到「Actions」分頁。
+2. 左側選擇「回歸測試」，再點選任一次執行。
+3. 展開各工作的步驟即可查看完整日誌；❌ 表示該步驟失敗。
+4. 手動執行：進入「回歸測試」頁面，按右側「Run workflow」，選擇分支後啟動。
+
+CI 失敗時，先在本機執行「維護者驗證」中的對應命令重現，排除環境差異後再修正。
