@@ -10,6 +10,7 @@
 - `sql-spa-tools-catalog.html`
 - `sql-spa-tools-column-lineage.html`
 - `sql-spa-tools-sqlscriptmanage.html`
+- `sql-spa-tools-excel-csv-sql.html`
 - `sql-spa-tools-oracle-formatter.html`
 - `sql-spa-tools-pii-cleaner.html`
 - `sql-spa-tools-sql-compare.html`

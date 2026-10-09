@@ -14,6 +14,7 @@ SQL SPA Tools 是一組以瀏覽器執行的 Oracle SQL 工具集，包含格式
 - [SQL Catalog](#sql-catalog)
 - [SQL 欄位血緣分析器](#sql-欄位血緣分析器)
 - [SQLScriptManage](#sqlscriptmanage)
+- [Excel／CSV 轉 SQL](#excelcsv-轉-sql)
 - [資料安全與保存](#資料安全與保存)
 - [常見問題排除](#常見問題排除)
 - [維護者驗證](#維護者驗證)
@@ -66,6 +67,7 @@ flowchart TD
 | SQL Catalog | 建立 SQL 檔案清冊與維護用途、分類、標籤 | `sql_catalog.json`、CSV、Markdown、HTML、ZIP |
 | SQL 欄位血緣分析器 | 分析欄位來源、上下游關係與 CTE | SVG、PNG、CSV、JSON、Mermaid |
 | SQLScriptManage | 離線管理專案、SQL 腳本草稿與版本分支 | JSON 備份、SQL 檔案、版本歷程 |
+| Excel／CSV 轉 SQL | 將 CSV、TSV 或貼上的試算表資料轉成 SQL | DDL、批次 INSERT、`.sql` |
 
 ## Oracle SQL Formatter
 
@@ -149,6 +151,27 @@ SQLScriptManage 是單一 HTML 的離線 SQL 專案與版本管理工具，資�
 
 若瀏覽器不允許 IndexedDB，頁面會切換成記憶體模式並顯示警告；此模式關閉分頁後資料會消失，請先完成 JSON 備份。
 
+## Excel／CSV 轉 SQL
+
+此工具可在瀏覽器中將 CSV、TSV、TXT 或直接貼上的 Excel／Google Sheets 資料轉成 PostgreSQL、MySQL／MariaDB、Microsoft SQL Server、Oracle 或 SQLite 語法。原始資料不會上傳到網路。
+
+1. 開啟「Excel／CSV 轉 SQL」，將檔案拖放到輸入區，或直接貼上以 Tab 或逗號分隔的資料；載入檔案時可選擇自動偵測 BOM、UTF-8、Big5／CP950、UTF-16 LE 或 UTF-16 BE 編碼。
+2. 按「解析資料」。若首列看起來不像欄位標題，工具會提示並改用自動欄位名稱；也可以手動選擇「首行作為欄位名稱」或「自動產生欄位名稱」。
+3. 選擇 SQL 方言、資料表名稱與每批筆數，依需求開啟 `CREATE TABLE`、`DROP TABLE`、`IF NOT EXISTS` 與交易包裝。
+4. 檢查欄位推論結果，可覆寫欄位型態、設定 PK 或取消 `NOT NULL`。若資料沒有標題，可勾選「啟用自訂欄位名稱」，輸入以逗號或 Tab 分隔的名稱後按「套用自訂欄位名稱」。
+5. 在「DDL（Schema）」與「DML（Insert）」分頁檢查輸出；確認無誤後按「複製目前 SQL」或「下載 .sql」。
+
+工具會辨識常見的整數、小數、日期、時間、布林值與文字；空字串、`NULL`、`N/A`、`nil` 與 `-` 等值會依輸出規則處理為 SQL `NULL`。前導零資料若不適合當數字，請在欄位設定中覆寫為文字型態。
+
+```mermaid
+flowchart TD
+  A[載入 CSV／TSV 或貼上資料] --> B[選擇編碼與欄位模式]
+  B --> C[解析資料與推論型態]
+  C --> D[調整方言、表名與欄位約束]
+  D --> E[檢查 DDL／DML 預覽]
+  E --> F[複製 SQL 或下載 .sql]
+```
+
 ## 資料安全與保存
 
 - 工具是純前端離線頁面；SQL 內容與分析主要在目前瀏覽器分頁中處理，不會由本專案主動上傳到伺服器。
@@ -201,10 +224,13 @@ flowchart LR
 
 ```powershell
 node '.\tests\test-theme.js'
+node '.\tests\test-excel-csv-sql.js'
 & '.\tests\validate-theme.ps1'
 & '.\tests\validate-index.ps1'
 & '.\tests\validate-home-links.ps1'
 ```
+
+Excel／CSV 轉 SQL 的人工驗收資料位於 [uat-fixtures](uat-fixtures/)，涵蓋 UTF-8、Big5／CP950、UTF-16、無標題 TSV、引號、逗號、多行儲存格與前導零等情境。可依 [uat-fixtures/README.md](uat-fixtures/README.md) 的建議設定逐項確認預覽、複製與下載結果。
 
 Windows PowerShell 讀取本文件時，請明確指定 UTF-8：
 

@@ -26,7 +26,8 @@ $targets = @(
   'sql-spa-tools-pii-cleaner.html',
   'sql-spa-tools-catalog.html',
   'sql-spa-tools-column-lineage.html',
-  'sql-spa-tools-sqlscriptmanage.html'
+  'sql-spa-tools-sqlscriptmanage.html',
+  'sql-spa-tools-excel-csv-sql.html'
 )
 foreach ($target in $targets) {
   if ($html -notmatch ('href=["'']' + [regex]::Escape($target) + '["'']')) {
@@ -34,8 +35,8 @@ foreach ($target in $targets) {
   }
 }
 
-if (($html | Select-String -Pattern 'class=["'']tool-card["'']' -AllMatches).Matches.Count -ne 6) {
-  throw 'index.html must contain six tool cards'
+if (($html | Select-String -Pattern 'class=["'']tool-card["'']' -AllMatches).Matches.Count -ne 7) {
+  throw 'index.html must contain seven tool cards'
 }
 
-Write-Output 'Index contract passed: title, theme, toggle, six tool links'
+Write-Output 'Index contract passed: title, theme, toggle, seven tool links'

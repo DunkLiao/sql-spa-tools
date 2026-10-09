@@ -21,6 +21,7 @@ SQL SPA Tools｜功能名稱
 | SQL 個資清除 | `SQL SPA Tools｜SQL 個資清除器` |
 | SQL 檔案清冊 | `SQL SPA Tools｜SQL Catalog` |
 | SQL 欄位血緣分析 | `SQL SPA Tools｜SQL 欄位血緣分析器` |
+| Excel／CSV 轉 SQL | `SQL SPA Tools｜Excel／CSV 轉 SQL` |
 
 ## HTML 檔名
 
@@ -49,6 +50,7 @@ sql-spa-tools-<功能識別字>.html
 | SQL 檔案清冊 | `sql-spa-tools-catalog.html` |
 | SQL 欄位血緣分析 | `sql-spa-tools-column-lineage.html` |
 | SQLScriptManage | `sql-spa-tools-sqlscriptmanage.html` |
+| Excel／CSV 轉 SQL | `sql-spa-tools-excel-csv-sql.html` |
 
 ## 新增頁面
 

@@ -7,7 +7,8 @@ $toolPages = @(
   'sql-spa-tools-pii-cleaner.html',
   'sql-spa-tools-catalog.html',
   'sql-spa-tools-column-lineage.html',
-  'sql-spa-tools-sqlscriptmanage.html'
+  'sql-spa-tools-sqlscriptmanage.html',
+  'sql-spa-tools-excel-csv-sql.html'
 )
 
 foreach ($page in $toolPages) {
