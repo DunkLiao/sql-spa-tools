@@ -88,13 +88,27 @@
 
 ## 驗證命令
 
-在專案根目錄執行：
+以下命令與 GitHub Actions「回歸測試」workflow 完全相同（設定檔：[.github/workflows/regression-test.yml](.github/workflows/regression-test.yml)）。在本機執行可先重現 CI 結果，再推送變更。
+
+Node.js 測試（CI 使用 Node.js 22，於 `ubuntu-latest` 執行）：
 
 ```powershell
 node '.\tests\test-theme.js'
-& '.\tests\validate-theme.ps1'
+node '.\tests\test-excel-csv-sql.js'
+node '.\tests\test-excel-csv-sql-cte.js'
+node '.\tests\test-sqlscriptmanage.js'
 node --check '.\theme.js'
 ```
+
+PowerShell 驗證（CI 於 `windows-latest` 以 `pwsh` 執行；本機 Windows PowerShell 亦可）：
+
+```powershell
+& '.\tests\validate-theme.ps1'
+& '.\tests\validate-index.ps1'
+& '.\tests\validate-home-links.ps1'
+```
+
+新增或調整測試腳本時，必須同步更新 CI workflow 與上述清單，確保規範文件、測試與 CI 保持一致。
 
 完成後應再以瀏覽器開啟所有 HTML 頁面，確認主題切換、頁面布局、表單操作與動態輸出均正常。
 
