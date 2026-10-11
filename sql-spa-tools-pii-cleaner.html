@@ -29,7 +29,7 @@
   --m-id:#ecd9a8; --m-acct:#e6c3c0; --m-seq:#c5d3e0; --m-sub:#c8d8c4; --m-ban:#d8cbe0;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:"Microsoft JhengHei","PingFang TC",sans-serif;font-size:14px;color:var(--text);background:var(--page)}
+body{margin:0;font-family:var(--theme-font-sans);font-size:14px;color:var(--text);background:var(--page)}
 header{background:var(--head);color:#fbfaf8;padding:10px 18px;display:flex;align-items:center;gap:16px}
 header h1{font-size:18px;margin:0;font-weight:600;letter-spacing:.5px}
 header small{opacity:.85}
@@ -57,14 +57,14 @@ th,td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertic
 th{position:sticky;top:0;background:var(--bg);cursor:pointer;user-select:none;z-index:1;font-weight:600}
 tr:hover{background:var(--hover)}
 tr.sel{background:var(--sel)}
-td.path{word-break:break-all;font-family:Consolas,monospace;font-size:12px}
+td.path{word-break:break-all;font-family:var(--theme-font-mono);font-size:12px}
 td.num{text-align:right}
 .tag{display:inline-block;padding:0 6px;border-radius:10px;font-size:12px;margin-right:4px;background:var(--bg);color:var(--muted)}
 .t-warn{background:var(--warn-bg);color:var(--warn)}
 .t-err{background:var(--err-bg);color:var(--err)}
 .t-ok{background:var(--ok-bg);color:var(--ok)}
 #detail{padding:8px 10px;font-size:13px}
-#detail pre{white-space:pre-wrap;word-break:break-all;background:var(--hover);border:1px solid var(--line);padding:6px 8px;border-radius:4px;margin:4px 0 10px;font-family:Consolas,"MingLiU",monospace;font-size:12px}
+#detail pre{white-space:pre-wrap;word-break:break-all;background:var(--hover);border:1px solid var(--line);padding:6px 8px;border-radius:4px;margin:4px 0 10px;font-family:var(--theme-font-mono);font-size:12px}
 mark{padding:0 2px;border-radius:2px;color:var(--text);background:var(--m-id)}
 mark.id{background:var(--m-id)}
 mark.acct{background:var(--m-acct)}
@@ -76,7 +76,7 @@ select{font:inherit;font-size:12px;border:1px solid var(--bd);border-radius:4px;
 input[type=text]{font:inherit;padding:4px 6px;border:1px solid var(--bd);border-radius:4px;background:#fff;color:var(--text)}
 input[type=text]:focus,select:focus{outline:2px solid var(--sel);border-color:var(--pri)}
 .hint{color:var(--muted);font-size:12px}
-#log{max-height:120px;overflow:auto;font-family:Consolas,monospace;font-size:12px;background:var(--bg);border-radius:4px;padding:4px 8px;margin-top:8px;display:none}
+#log{max-height:120px;overflow:auto;font-family:var(--theme-font-mono);font-size:12px;background:var(--bg);border-radius:4px;padding:4px 8px;margin-top:8px;display:none}
 </style>
 </head>
 <body>

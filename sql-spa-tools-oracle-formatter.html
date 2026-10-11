@@ -9,10 +9,9 @@
 :root{
   --bg:#ECE8E2; --panel:#F7F5F1; --card:#FFFFFF; --line:#D9D3CA; --text:#4A4946; --muted:#8A857D;
   --pri:#7D8E8A; --pri-d:#66766F; --acc:#B49A8C; --ok:#8FA28A; --warn:#C7A86E; --err:#B67B74; --info:#8C9BAE;
-  --add:#E3EADD; --del:#F0DEDA; --mono:Consolas,"Cascadia Mono","Courier New",monospace;
-}
+  --add:#E3EADD; --del:#F0DEDA; }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.5 "Microsoft JhengHei","PingFang TC","Segoe UI",sans-serif}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.5 var(--theme-font-sans)}
 header{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
 header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.5px}
 header h1 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:8px}
@@ -39,7 +38,7 @@ input[type=text],select,textarea{font:inherit;border:1px solid var(--line);borde
 .fi{display:flex;align-items:center;gap:6px;padding:4px 8px;border-bottom:1px solid #F0ECE6;cursor:pointer;font-size:12.5px}
 .fi:hover{background:#F4F1EC}
 .fi.sel{background:#E6ECEA}
-.fi .p{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--mono)}
+.fi .p{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--theme-font-mono)}
 .b{font-size:11px;padding:0 6px;border-radius:9px;color:#fff;white-space:nowrap}
 .b.changed{background:var(--acc)}.b.same{background:var(--ok)}.b.failed{background:var(--err)}.b.skip{background:var(--muted)}
 .b.written{background:var(--pri)}.b.pl{background:var(--info)}.b.iss{background:var(--warn)}.b.isse{background:var(--err)}.b.new{background:#BDB6AB}
@@ -54,10 +53,10 @@ section{display:flex;flex-direction:column;min-height:0;background:var(--panel);
 .stat b{display:block;font-size:20px}.stat span{font-size:12px;color:var(--muted)}
 .stat.e b{color:var(--err)}.stat.w b{color:#A88A4E}.stat.i b{color:var(--info)}
 .dhead{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.dhead .fn{font-family:var(--mono);font-weight:600}
+.dhead .fn{font-family:var(--theme-font-mono);font-weight:600}
 .msg{padding:8px 12px;border-radius:8px;margin-bottom:8px;font-size:13px}
 .msg.err{background:var(--del);color:#7A443E}.msg.ok{background:var(--add)}.msg.info{background:#E6EAF0}
-table.diff{width:100%;border-collapse:collapse;font:12.5px/1.45 var(--mono);table-layout:fixed}
+table.diff{width:100%;border-collapse:collapse;font:12.5px/1.45 var(--theme-font-mono);table-layout:fixed}
 table.diff td{padding:0 6px;vertical-align:top;white-space:pre-wrap;word-break:break-all}
 table.diff td.ln{width:46px;text-align:right;color:#B0A99F;background:#FAF8F5;user-select:none}
 table.diff td.c{border-right:1px solid var(--line)}
@@ -65,13 +64,13 @@ td.del{background:var(--del)}td.add{background:var(--add)}td.emp{background:#F6F
 table.grid{width:100%;border-collapse:collapse;font-size:13px}
 table.grid th,table.grid td{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
 table.grid th{background:var(--panel);position:sticky;top:-12px;z-index:1}
-table.grid td.m{font-family:var(--mono);font-size:12px}
+table.grid td.m{font-family:var(--theme-font-mono);font-size:12px}
 tr.clk{cursor:pointer}tr.clk:hover{background:#F4F1EC}
 .lv{font-size:11px;padding:0 6px;border-radius:9px;color:#fff;white-space:nowrap}.lv.error{background:var(--err)}.lv.warn{background:var(--warn)}.lv.info{background:var(--info)}
 .qt{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:calc(100% - 44px)}
-.qt textarea{height:100%;min-height:360px;font:12.5px/1.45 var(--mono);resize:none}
+.qt textarea{height:100%;min-height:360px;font:12.5px/1.45 var(--theme-font-mono);resize:none}
 #qIssues{margin-top:10px}
-#log{font:12px/1.6 var(--mono);white-space:pre-wrap}
+#log{font:12px/1.6 var(--theme-font-mono);white-space:pre-wrap}
 footer{height:34px;display:flex;align-items:center;gap:12px;padding:0 20px;background:var(--panel);border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 #prog{width:260px;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
 #prog i{display:block;height:100%;width:0;background:var(--pri);transition:width .1s}
@@ -84,7 +83,7 @@ details.rules summary{padding:8px 12px;cursor:pointer;font-weight:600;color:var(
 details.rules .in{padding:0 12px 12px}
 details.rules table.grid th{position:static}
 details.rules select{width:auto;padding:2px 4px}
-code{font-family:var(--mono);background:#EFEBE5;padding:1px 5px;border-radius:4px;font-size:12px}
+code{font-family:var(--theme-font-mono);background:#EFEBE5;padding:1px 5px;border-radius:4px;font-size:12px}
 </style>
 </head>
 <body>
@@ -905,7 +904,7 @@ function exportReport() {
   const rows = S.files.map(f => `<tr><td>${esc(f.path)}</td><td>${f.mode === 'plsql' ? 'PL/SQL' : 'SQL'}</td><td>${f.enc.toUpperCase()}</td><td>${stText(f.status)}</td><td>${f.issues.filter(i => i.level === 'error').length}</td><td>${f.issues.length}</td><td>${esc(f.err || '')}</td></tr>`).join('');
   const rrows = RULES.filter(r => byRule[r.id]).map(r => `<tr><td>${r.cat}</td><td>${r.id}</td><td>${esc(r.name)}</td><td>${LV_TEXT[RCFG[r.id].level]}</td><td>${byRule[r.id]}</td></tr>`).join('');
   const irows = iss.sort((a, b) => LV_ORDER[a.i.level] - LV_ORDER[b.i.level]).map(({ f, i }) => `<tr><td class="${i.level}">${LV_TEXT[i.level]}</td><td>${esc(f.path)}</td><td>${i.line}</td><td>${esc(i.name)}</td><td>${esc(i.msg)}</td></tr>`).join('');
-  const html = `<!DOCTYPE html><html lang="zh-Hant-TW"><head><meta charset="UTF-8"><title>SQL Formatter 報告</title><style>body{font:14px "Microsoft JhengHei",sans-serif;color:#4A4946;background:#F1EEE9;padding:24px}h1{color:#6F8279}table{border-collapse:collapse;width:100%;background:#FBFAF7;margin-bottom:24px}th,td{border:1px solid #D7D2CA;padding:5px 8px;text-align:left;font-size:13px}th{background:#E8E5DF}.s span{display:inline-block;background:#FBFAF7;border:1px solid #D7D2CA;border-radius:8px;padding:8px 16px;margin:0 8px 8px 0}td.error{color:#AD7774;font-weight:700}td.warn{color:#AA8D62;font-weight:700}td.info{color:#8197A8}</style></head><body>
+  const html = `<!DOCTYPE html><html lang="zh-Hant-TW"><head><meta charset="UTF-8"><title>SQL Formatter 報告</title><style>:root{--theme-font-sans:"Microsoft JhengHei","PingFang TC","Noto Sans TC","Noto Sans CJK TC",system-ui,sans-serif;--theme-font-mono:"Cascadia Mono",Consolas,"SFMono-Regular",monospace}body{font:14px var(--theme-font-sans);color:#4A4946;background:#F1EEE9;padding:24px}h1{color:#6F8279}table{border-collapse:collapse;width:100%;background:#FBFAF7;margin-bottom:24px}th,td{border:1px solid #D7D2CA;padding:5px 8px;text-align:left;font-size:13px}th{background:#E8E5DF}.s span{display:inline-block;background:#FBFAF7;border:1px solid #D7D2CA;border-radius:8px;padding:8px 16px;margin:0 8px 8px 0}td.error{color:#AD7774;font-weight:700}td.warn{color:#AA8D62;font-weight:700}td.info{color:#8197A8}</style></head><body>
 <h1>Oracle SQL Formatter 報告</h1><p>資料夾：${esc(S.rootName)}　產出時間：${new Date().toLocaleString('zh-TW')}</p>
 <p class="s"><span>檔案總數 <b>${S.files.length}</b></span><span>有變更 <b>${c.changed}</b></span><span>已寫回 <b>${c.written}</b></span><span>無變更 <b>${c.same}</b></span><span>失敗 <b>${c.failed}</b></span></p>
 <p class="s"><span>健檢錯誤 <b>${lc.error}</b></span><span>注意 <b>${lc.warn}</b></span><span>提示 <b>${lc.info}</b></span></p>

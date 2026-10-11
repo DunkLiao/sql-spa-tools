@@ -6,10 +6,10 @@
   <title>SQL SPA Tools｜SQLScriptManage</title>
   <link rel="stylesheet" href="theme.css">
   <style>
-    :root { --sm-mono: Consolas, "Cascadia Mono", "Courier New", monospace; }
+    :root { }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
-    body { overflow: hidden; font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif; }
+    body { overflow: hidden; font-family: var(--theme-font-sans); }
     button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
     .sm-app { display: grid; grid-template-rows: auto auto 1fr auto; height: 100vh; background: var(--theme-page); color: var(--theme-text); }
@@ -36,16 +36,16 @@
     .sm-script-list { display: grid; gap: 5px; padding: 0 9px 18px; }
     .sm-script-item { display: block; width: 100%; border: 1px solid transparent; border-radius: 8px; padding: 9px 10px; text-align: left; background: transparent; color: var(--theme-text); }
     .sm-script-item:hover, .sm-script-item.active { border-color: var(--theme-primary); background: var(--theme-surface-soft); }
-    .sm-script-name { display: block; overflow: hidden; font-family: var(--sm-mono); font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .sm-script-name { display: block; overflow: hidden; font-family: var(--theme-font-mono); font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
     .sm-script-meta { display: block; margin-top: 3px; color: var(--theme-muted); font-size: 12px; }
     .sm-editor { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; overflow: hidden; background: var(--theme-page); }
     .sm-editor-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 16px 10px; border-bottom: 1px solid var(--theme-border); background: var(--theme-surface); }
-    .sm-editor-head h2 { overflow: hidden; flex: 1; min-width: 170px; margin: 0; font-family: var(--sm-mono); font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
+    .sm-editor-head h2 { overflow: hidden; flex: 1; min-width: 170px; margin: 0; font-family: var(--theme-font-mono); font-size: 16px; text-overflow: ellipsis; white-space: nowrap; }
     .sm-status { color: var(--theme-muted); font-size: 12px; }
     .sm-status.dirty { color: var(--theme-warning); }
     .sm-code-wrap { display: grid; grid-template-columns: 48px 1fr; min-height: 0; overflow: hidden; margin: 14px; border: 1px solid var(--theme-border); border-radius: 10px; background: var(--theme-surface-soft); }
-    .sm-lines { overflow: hidden; padding: 12px 9px; border-right: 1px solid var(--theme-border); color: var(--theme-muted); font: 13px/1.6 var(--sm-mono); text-align: right; user-select: none; }
-    #sqlEditor { width: 100%; height: 100%; min-height: 260px; resize: none; border: 0; outline: 0; padding: 12px 14px; background: transparent; color: var(--theme-text); font: 13px/1.6 var(--sm-mono); tab-size: 2; }
+    .sm-lines { overflow: hidden; padding: 12px 9px; border-right: 1px solid var(--theme-border); color: var(--theme-muted); font: 13px/1.6 var(--theme-font-mono); text-align: right; user-select: none; }
+    #sqlEditor { width: 100%; height: 100%; min-height: 260px; resize: none; border: 0; outline: 0; padding: 12px 14px; background: transparent; color: var(--theme-text); font: 13px/1.6 var(--theme-font-mono); tab-size: 2; }
     .sm-editor-foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 14px; border-top: 1px solid var(--theme-border); background: var(--theme-surface); }
     .sm-editor-foot .sm-spacer { min-width: 10px; }
     .sm-inspector { padding-bottom: 24px; }
@@ -59,7 +59,7 @@
     .sm-version-node { width: 100%; border: 1px solid var(--theme-border); border-radius: 7px; padding: 8px; text-align: left; background: var(--theme-surface); color: var(--theme-text); }
     .sm-version-node:hover, .sm-version-node.current { border-color: var(--theme-primary); background: var(--theme-surface-soft); }
     .sm-version-children { display: grid; gap: 5px; margin-left: 14px; padding-left: 9px; border-left: 2px solid var(--theme-border); }
-    .sm-version-label { display: flex; justify-content: space-between; gap: 5px; font-family: var(--sm-mono); font-size: 12px; font-weight: 700; }
+    .sm-version-label { display: flex; justify-content: space-between; gap: 5px; font-family: var(--theme-font-mono); font-size: 12px; font-weight: 700; }
     .sm-version-note { display: block; overflow: hidden; margin-top: 3px; color: var(--theme-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
     .sm-diff-toolbar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .sm-diff-toolbar label { display: inline-flex; align-items: center; gap: 4px; color: var(--theme-muted); font-size: 12px; }
@@ -68,7 +68,7 @@
     .sm-diff-stat.added { color: var(--theme-success); }
     .sm-diff-stat.removed { color: var(--theme-danger); }
     .sm-diff-stat.changed { color: var(--theme-warning); }
-    .sm-diff-view { overflow: auto; border: 1px solid var(--theme-border); border-radius: 8px; background: var(--theme-surface-soft); font: 12px/1.55 var(--sm-mono); }
+    .sm-diff-view { overflow: auto; border: 1px solid var(--theme-border); border-radius: 8px; background: var(--theme-surface-soft); font: 12px/1.55 var(--theme-font-mono); }
     .sm-diff-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     .sm-diff-table th { padding: 7px; background: var(--theme-surface-alt); color: var(--theme-muted); text-align: left; }
     .sm-diff-table td { width: 50%; padding: 3px 7px; border-top: 1px solid var(--theme-border-soft); vertical-align: top; white-space: pre-wrap; word-break: break-word; }
@@ -228,7 +228,7 @@
     function openCompareDialog() { if (compareVersions().length < 2) { showToast('至少需要兩個版本才能比較', 'error'); return; } populateCompareVersions(); $('compareResult').hidden = !state.compareResult; if (state.compareResult) { renderDiffSummary(state.compareResult.result); setDiffView(state.compareView); } openDialog($('compareDialog')); }
     function runComparison() { const versions = compareVersions(); const base = versions.find(version => version.id === $('baseVersionSelect').value); const target = versions.find(version => version.id === $('targetVersionSelect').value); if (!base || !target || base.id === target.id) { showToast('請選擇兩個不同版本', 'error'); return; } const options = { ignoreCase: $('ignoreCaseInput').checked, ignoreTrailingWhitespace: $('ignoreTrailingWhitespaceInput').checked, ignoreBlankLines: $('ignoreBlankLinesInput').checked }; state.compareResult = { base, target, options, result: Core.compareLines(base.sqlContent, target.sqlContent, options) }; $('compareResult').hidden = false; renderDiffSummary(state.compareResult.result); setDiffView('side'); }
     async function copyUnified() { if (!state.compareResult) return; try { await navigator.clipboard.writeText(state.compareResult.result.unifiedText); showToast('Unified Diff 已複製', 'success'); } catch (error) { showToast('無法使用剪貼簿，請改用 HTML 報表下載', 'error'); } }
-    function diffReportHtml() { const comparison = state.compareResult; const rows = comparison.result.rows.map(row => `<tr class="${row.type}"><td>${row.leftNumber || ''}</td><td>${escapeHtml(row.leftText)}</td><td>${row.rightNumber || ''}</td><td>${escapeHtml(row.rightText)}</td></tr>`).join(''); return `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>SQLScriptManage 版本差異</title><style>body{margin:24px;background:#f1eee9;color:#4a4946;font:14px/1.6 system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:24px;background:#fbfaf7;border:1px solid #d7d2ca;border-radius:12px}table{width:100%;border-collapse:collapse;font:12px/1.5 Consolas,monospace}th,td{padding:6px;border:1px solid #d7d2ca;text-align:left;vertical-align:top;white-space:pre-wrap}.added td{background:#e3ecdf}.removed td{background:#f1dfdc}.changed td{background:#f1e8d7}.summary{padding:10px;background:#e8e5df}</style></head><body><main><h1>SQLScriptManage 版本差異</h1><p class="summary">基準：${escapeHtml(comparison.base.versionNumber)}　目標：${escapeHtml(comparison.target.versionNumber)}<br>新增 ${comparison.result.stats.added}、刪除 ${comparison.result.stats.removed}、修改 ${comparison.result.stats.changed}、未變更 ${comparison.result.stats.unchanged}</p><table><thead><tr><th>基準行</th><th>基準內容</th><th>目標行</th><th>目標內容</th></tr></thead><tbody>${rows}</tbody></table></main></body></html>`; }
+    function diffReportHtml() { const comparison = state.compareResult; const rows = comparison.result.rows.map(row => `<tr class="${row.type}"><td>${row.leftNumber || ''}</td><td>${escapeHtml(row.leftText)}</td><td>${row.rightNumber || ''}</td><td>${escapeHtml(row.rightText)}</td></tr>`).join(''); return `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>SQLScriptManage 版本差異</title><style>:root{--theme-font-sans:"Microsoft JhengHei","PingFang TC","Noto Sans TC","Noto Sans CJK TC",system-ui,sans-serif;--theme-font-mono:"Cascadia Mono",Consolas,"SFMono-Regular",monospace}body{margin:24px;background:#f1eee9;color:#4a4946;font:14px/1.6 var(--theme-font-sans)}main{max-width:1200px;margin:auto;padding:24px;background:#fbfaf7;border:1px solid #d7d2ca;border-radius:12px}table{width:100%;border-collapse:collapse;font:12px/1.5 var(--theme-font-mono)}th,td{padding:6px;border:1px solid #d7d2ca;text-align:left;vertical-align:top;white-space:pre-wrap}.added td{background:#e3ecdf}.removed td{background:#f1dfdc}.changed td{background:#f1e8d7}.summary{padding:10px;background:#e8e5df}</style></head><body><main><h1>SQLScriptManage 版本差異</h1><p class="summary">基準：${escapeHtml(comparison.base.versionNumber)}　目標：${escapeHtml(comparison.target.versionNumber)}<br>新增 ${comparison.result.stats.added}、刪除 ${comparison.result.stats.removed}、修改 ${comparison.result.stats.changed}、未變更 ${comparison.result.stats.unchanged}</p><table><thead><tr><th>基準行</th><th>基準內容</th><th>目標行</th><th>目標內容</th></tr></thead><tbody>${rows}</tbody></table></main></body></html>`; }
     function downloadDiffReport() { if (!state.compareResult) return; const name = `sqlscriptmanage-diff-${state.compareResult.base.versionNumber}-to-${state.compareResult.target.versionNumber}.html`; download(name, diffReportHtml(), 'text/html;charset=utf-8'); showToast('HTML 差異報表已下載', 'success'); }
     function showProjectInfo() { const project = currentProject(); if (!project) return; const count = projectScripts().length; $('projectInfoBody').innerHTML = `<dl class="sm-detail"><dt>名稱</dt><dd>${escapeHtml(project.name)}</dd><dt>代碼</dt><dd>${escapeHtml(project.code) || '—'}</dd><dt>說明</dt><dd>${escapeHtml(project.description) || '—'}</dd><dt>腳本數量</dt><dd>${count}</dd><dt>建立時間</dt><dd>${formatDate(project.createdAt)}</dd><dt>更新時間</dt><dd>${formatDate(project.updatedAt)}</dd></dl>`; openDialog($('projectInfoDialog')); }
     async function exportBackup() { const data = {}; for (const store of Core.STORES) data[store] = await storageApi.all(store); download('sqlscriptmanage-backup.json', JSON.stringify(Core.createBackup(data), null, 2), 'application/json;charset=utf-8'); showToast('完整 JSON 備份已匯出', 'success'); }

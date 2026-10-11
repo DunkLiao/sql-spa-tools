@@ -6,9 +6,9 @@
   <title>SQL SPA Tools｜Excel／CSV 轉 SQL</title>
   <link rel="stylesheet" href="theme.css">
   <style>
-    :root { --csv-max: 1500px; --csv-mono: Consolas, "Cascadia Mono", monospace; }
+    :root { --csv-max: 1500px;  }
     * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif; }
+    body { min-height: 100vh; margin: 0; font-family: var(--theme-font-sans); }
     button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
     .csv-app { width: min(var(--csv-max), calc(100% - 32px)); margin: 0 auto; padding: 26px 0 82px; }
@@ -25,7 +25,7 @@
     .csv-drop.dragging { border-color: var(--theme-primary); background: var(--theme-info-soft); }
     .csv-drop strong { color: var(--theme-primary); }
     .csv-drop input { max-width: 100%; }
-    .csv-text { width: 100%; min-height: 168px; resize: vertical; border: 1px solid var(--theme-border); border-radius: 9px; padding: 11px; background: var(--theme-surface); color: var(--theme-text); font: 13px/1.55 var(--csv-mono); }
+    .csv-text { width: 100%; min-height: 168px; resize: vertical; border: 1px solid var(--theme-border); border-radius: 9px; padding: 11px; background: var(--theme-surface); color: var(--theme-text); font: 13px/1.55 var(--theme-font-mono); }
     .csv-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 14px; }
     .csv-field { display: grid; gap: 5px; color: var(--theme-muted); font-size: 13px; }
     .csv-field.full { grid-column: 1 / -1; }
@@ -44,7 +44,7 @@
     .csv-tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--theme-border); }
     .csv-tab { border: 0; border-bottom: 2px solid transparent; padding: 9px 12px; background: transparent; color: var(--theme-muted); }
     .csv-tab.active { border-bottom-color: var(--theme-primary); color: var(--theme-text); font-weight: 700; }
-    .csv-code { min-height: 310px; max-height: 560px; overflow: auto; margin: 13px 0 0; padding: 14px; border: 1px solid var(--theme-border); border-radius: 9px; background: var(--theme-surface-soft); color: var(--theme-text); font: 12px/1.6 var(--csv-mono); white-space: pre; }
+    .csv-code { min-height: 310px; max-height: 560px; overflow: auto; margin: 13px 0 0; padding: 14px; border: 1px solid var(--theme-border); border-radius: 9px; background: var(--theme-surface-soft); color: var(--theme-text); font: 12px/1.6 var(--theme-font-mono); white-space: pre; }
     .csv-column-wrap { overflow: auto; max-height: 350px; border: 1px solid var(--theme-border); border-radius: 9px; }
     .csv-columns { width: 100%; border-collapse: collapse; font-size: 12px; }
     .csv-columns th, .csv-columns td { padding: 8px; border-bottom: 1px solid var(--theme-border-soft); text-align: left; vertical-align: middle; white-space: nowrap; }

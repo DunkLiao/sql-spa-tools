@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="theme.css">
   <style>
     * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif; }
+    body { min-height: 100vh; margin: 0; font-family: var(--theme-font-sans); }
     button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
     .cte-app { width: min(1540px, calc(100% - 32px)); margin: auto; padding: 24px 0 86px; }
@@ -23,7 +23,7 @@
     .cte-drop { display: grid; gap: 8px; justify-items: center; padding: 15px; border: 1px dashed var(--theme-secondary); border-radius: 10px; background: var(--theme-surface-soft); color: var(--theme-muted); text-align: center; }
     .cte-drop.dragging { border-color: var(--theme-primary); background: var(--theme-info-soft); }
     .cte-drop input { max-width: 100%; }
-    .cte-text { width: 100%; min-height: 125px; resize: vertical; border: 1px solid var(--theme-border); border-radius: 8px; padding: 10px; background: var(--theme-surface); color: var(--theme-text); font: 12px/1.5 Consolas, monospace; }
+    .cte-text { width: 100%; min-height: 125px; resize: vertical; border: 1px solid var(--theme-border); border-radius: 8px; padding: 10px; background: var(--theme-surface); color: var(--theme-text); font: 12px/1.5 var(--theme-font-mono); }
     .cte-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
     .cte-field { display: grid; gap: 5px; color: var(--theme-muted); font-size: 13px; }
     .cte-field.full { grid-column: 1 / -1; }
@@ -40,7 +40,7 @@
     .cte-message.error { color: var(--theme-danger); background: var(--theme-danger-soft); }
     .cte-stats { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
     .cte-stat { padding: 7px 9px; border: 1px solid var(--theme-border); border-radius: 7px; background: var(--theme-surface-alt); color: var(--theme-text); font-size: 12px; }
-    .cte-code { min-height: 360px; max-height: 67vh; overflow: auto; margin: 0; padding: 13px; border: 1px solid var(--theme-border); border-radius: 8px; background: var(--theme-surface-soft); color: var(--theme-text); font: 12px/1.55 Consolas, monospace; white-space: pre; }
+    .cte-code { min-height: 360px; max-height: 67vh; overflow: auto; margin: 0; padding: 13px; border: 1px solid var(--theme-border); border-radius: 8px; background: var(--theme-surface-soft); color: var(--theme-text); font: 12px/1.55 var(--theme-font-mono); white-space: pre; }
     .cte-columns-wrap { max-height: 300px; overflow: auto; border: 1px solid var(--theme-border); border-radius: 8px; }
     .cte-columns { width: 100%; border-collapse: collapse; font-size: 12px; }
     .cte-columns th, .cte-columns td { padding: 7px; border-bottom: 1px solid var(--theme-border-soft); text-align: left; white-space: nowrap; }

@@ -1,5 +1,8 @@
 /* SQL SPA Tools - shared Morandi light theme */
 :root {
+  --theme-font-sans: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", system-ui, sans-serif;
+  --theme-font-mono: "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+
   --theme-page: #f1eee9;
   --theme-surface: #fbfaf7;
   --theme-surface-alt: #e8e5df;
@@ -75,6 +78,14 @@
   --m-seq: #c9d7e3 !important;
   --m-sub: #c9d9ca !important;
   --m-ban: #d8cbe0 !important;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--theme-font-sans);
 }
 
 /* Light mode is the default; dark mode is opt-in via data-theme="dark". */

@@ -27,6 +27,21 @@
 5. 匯出報表、列印頁與 SVG 等離開主頁面的輸出，必須使用相同的主題色。
 6. 顏色變更不應影響既有版面、互動流程或資料處理行為。
 
+## 共用字型
+
+全站字型 token 定義於 `theme.css`，各頁面不得自行建立不同的全域字型設定：
+
+| Token | 字型堆疊 | 用途 |
+| --- | --- | --- |
+| `--theme-font-sans` | `"Microsoft JhengHei", "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", system-ui, sans-serif` | 一般介面、標題、表單、按鈕與表格 |
+| `--theme-font-mono` | `"Cascadia Mono", Consolas, "SFMono-Regular", monospace` | SQL、程式碼、路徑與日誌 |
+
+`body` 與表單控制項使用一般介面字型；程式碼相關元件可明確使用等寬字型。字型只從使用者裝置上的本機字型載入，不新增外部字型或網路依賴。標題沿用一般介面字型，不另用襯線字型建立不同風格。
+
+獨立開啟的報表、列印頁與匯出內容不一定會載入根目錄的 `theme.css`，因此其模板必須內嵌相同的字型候選順序。具 SVG 文字的輸出也應指定相同的一般或等寬字型堆疊。
+
+詳細維護規則見 [`FONTS.md`](FONTS.md)。
+
 ## 深／淺色模式
 
 - 預設模式為淺色，頁面未設定 `data-theme` 時即使用淺色 token。
