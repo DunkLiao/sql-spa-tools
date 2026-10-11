@@ -13,7 +13,7 @@ vm.runInNewContext(match[1], context);
 const core = context.window.SQLScriptManage;
 assert.ok(core, 'SQLScriptManage core API must be exposed for tests');
 assert.match(html, /\.sm-editor\s*\{[^}]*min-height:\s*0/, 'editor area must be shrinkable so its action bar remains visible');
-for (const color of ['#e3ecdf', '#f1dfdc', '#f1e8d7']) {
+for (const color of ['#e9e9e9', '#e8e8e8', '#ebebeb']) {
   assert.ok(html.includes(color), `diff report theme color ${color} must be embedded`);
 }
 for (const id of [

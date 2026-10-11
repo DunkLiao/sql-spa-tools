@@ -10,17 +10,19 @@
 SQL SPA Tools｜功能名稱
 ```
 
-同一個功能的瀏覽器分頁標題與頁面主標題應保持一致，皆使用 `SQL SPA Tools｜功能名稱` 作為主要名稱。版本號不放在頁面名稱中；若有必要顯示執行環境或產品特性，放在名稱旁的說明文字中，例如「純離線版」。
+同一個功能的瀏覽器分頁標題與頁面主標題應保持一致，皆使用 `SQL SPA Tools｜功能名稱` 作為主要名稱。版本號不放在頁面名稱中；若需補充其他必要資訊，放在名稱旁的說明文字中。
 
 目前頁面名稱如下：
 
 | 功能 | 頁面名稱 |
 | --- | --- |
+| 工具入口 | `SQL SPA Tools｜工具入口` |
 | Oracle SQL 格式化 | `SQL SPA Tools｜Oracle SQL Formatter` |
 | Oracle SQL 比對 | `SQL SPA Tools｜Oracle SQL Compare` |
 | SQL 個資清除 | `SQL SPA Tools｜SQL 個資清除器` |
 | SQL 檔案清冊 | `SQL SPA Tools｜SQL Catalog` |
 | SQL 欄位血緣分析 | `SQL SPA Tools｜SQL 欄位血緣分析器` |
+| SQLScriptManage | `SQL SPA Tools｜SQLScriptManage` |
 | Excel／CSV 轉 SQL | `SQL SPA Tools｜Excel／CSV 轉 SQL` |
 | Excel／CSV 轉 SQL CTE | `SQL SPA Tools｜Excel／CSV 轉 SQL CTE` |
 

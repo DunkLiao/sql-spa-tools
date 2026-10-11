@@ -3,6 +3,43 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const source = fs.readFileSync(require('node:path').join(__dirname, '..', 'theme.js'), 'utf8');
+const root = require('node:path').join(__dirname, '..');
+const stylesheet = fs.readFileSync(require('node:path').join(root, 'theme.css'), 'utf8');
+
+for (const token of [
+  '--theme-page: #f6f6f6', '--theme-surface: #ffffff', '--theme-text: #303030',
+  '--theme-primary: #444444', '--theme-primary-hover: #2e2e2e',
+  '--theme-success: #505050', '--theme-success-soft: #e6e6e6',
+  '--theme-warning: #5c5c5c', '--theme-warning-soft: #dddddd',
+  '--theme-danger: #333333', '--theme-danger-soft: #cecece',
+  '--theme-info: #595959', '--theme-info-soft: #eeeeee',
+]) {
+  assert.ok(stylesheet.includes(token), `Missing ink theme value: ${token}`);
+}
+for (const [, color] of stylesheet.matchAll(/--theme-[\w-]+:\s*(#[0-9a-f]{6})/gi)) {
+  assert.equal(new Set([color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)]).size, 1, `Theme token ${color} must be grayscale`);
+}
+assert.match(stylesheet, /:root\[data-theme='dark'\]\s*\{[^}]*--theme-page:\s*#202020/s);
+assert.match(stylesheet, /:root\[data-theme='dark'\]\s*\{[^}]*--theme-primary:\s*#5a5a5a/s);
+for (const [selector, token] of [
+  ['.l-使用中', '--theme-success-soft'], ['.l-草稿', '--theme-warning-soft'],
+  ['.t-待處理', '--theme-warning-soft'], ['.modal .mh', '--theme-surface-alt'],
+  ['.message.warn', '--theme-warning'], ['.fi.sel', '--theme-surface-soft'],
+  ['.toast.error', '--theme-danger-soft'],
+]) {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  assert.match(stylesheet, new RegExp(`${escaped}[^}]*\\{[^}]*var\\(${token}\\)`, 's'), `Missing themed override for ${selector}`);
+}
+
+for (const file of ['theme.css', ...fs.readdirSync(root).filter(name => name.endsWith('.html'))]) {
+  const content = fs.readFileSync(require('node:path').join(root, file), 'utf8');
+  for (const [, color] of content.matchAll(/#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})\b/gi)) {
+    const channels = color.length <= 4
+      ? [...color.slice(0, 3)]
+      : [color.slice(0, 2), color.slice(2, 4), color.slice(4, 6)];
+    assert.equal(new Set(channels).size, 1, `${file} contains non-gray color #${color}`);
+  }
+}
 
 function runTheme(saved) {
   const store = new Map(saved == null ? [] : [['sql_spa_tools_theme', saved]]);

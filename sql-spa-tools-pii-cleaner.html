@@ -7,30 +7,30 @@
 <link rel="stylesheet" href="theme.css">
 <title>SQL SPA Tools｜SQL 個資清除器</title>
 <style>
-/* ===== 莫蘭迪低飽和配色 ===== */
+/* 舊元件相容別名；實際顏色由 theme.css 統一提供。 */
 :root{
-  --head:#6b7f99;      /* 頁首 灰藍 */
-  --pri:#5a6f8c;       /* 主要按鈕 */
-  --pri-h:#4d6079;     /* 主要按鈕 hover */
-  --danger:#b5655f;    /* 危險按鈕 灰磚紅 */
-  --danger-h:#9f5550;
-  --page:#f7f6f3;      /* 頁面背景 暖灰白 */
-  --panel:#fdfcfa;     /* 面板背景 */
-  --bg:#ebe8e3;        /* 表頭／區塊底色 */
-  --bd:#d9d4cc;        /* 邊框 */
-  --line:#e7e3dc;      /* 表格分隔線 */
-  --sel:#eef1f5;       /* 勾選／選取列 */
-  --hover:#f2f0ec;
-  --text:#3e3c3a;
-  --muted:#7d7872;
-  --warn:#8a5f33; --warn-bg:#f3e6d3;
-  --err:#9a4a45;  --err-bg:#f2dcda;
-  --ok:#4f6b4a;   --ok-bg:#e1ebdd;
-  --m-id:#ecd9a8; --m-acct:#e6c3c0; --m-seq:#c5d3e0; --m-sub:#c8d8c4; --m-ban:#d8cbe0;
+  --head:#7d7d7d;      /* 頁首 */
+  --pri:#6d6d6d;       /* 主要按鈕 */
+  --pri-h:#5f5f5f;     /* 主要按鈕 hover */
+  --danger:#7b7b7b;    /* 危險按鈕 */
+  --danger-h:#6a6a6a;
+  --page:#f6f6f6;      /* 頁面背景 暖灰白 */
+  --panel:#fefefe;     /* 面板背景 */
+  --bg:#e8e8e8;        /* 表頭／區塊底色 */
+  --bd:#d5d5d5;        /* 邊框 */
+  --line:#e3e3e3;      /* 表格分隔線 */
+  --sel:#f1f1f1;       /* 勾選／選取列 */
+  --hover:#f0f0f0;
+  --text:#3c3c3c;
+  --muted:#797979;
+  --warn:#686868; --warn-bg:#e8e8e8;
+  --err:#626262;  --err-bg:#e1e1e1;
+  --ok:#646464;   --ok-bg:#e8e8e8;
+  --m-id:#dadada; --m-acct:#cbcbcb; --m-seq:#d1d1d1; --m-sub:#d3d3d3; --m-ban:#cfcfcf;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--theme-font-sans);font-size:14px;color:var(--text);background:var(--page)}
-header{background:var(--head);color:#fbfaf8;padding:10px 18px;display:flex;align-items:center;gap:16px}
+header{background:var(--head);color:#fafafa;padding:10px 18px;display:flex;align-items:center;gap:16px}
 header h1{font-size:18px;margin:0;font-weight:600;letter-spacing:.5px}
 header small{opacity:.85}
 main{padding:14px 18px}
@@ -82,7 +82,7 @@ input[type=text]:focus,select:focus{outline:2px solid var(--sel);border-color:va
 <body>
 <header>
   <h1>SQL SPA Tools｜SQL 個資清除器</h1>
-  <small>離線執行・掃描 .sql／.txt 檔（含子資料夾）・身分證字號／存款帳號（12–14 碼）／擔保品估價彙整序號・子號／統一編號・位元組層級取代，保留原始編碼</small>
+  <small>掃描 .sql／.txt 檔（含子資料夾）・身分證字號／存款帳號（12–14 碼）／擔保品估價彙整序號・子號／統一編號・位元組層級取代，保留原始編碼</small>
 </header>
 <main>
   <div class="bar">

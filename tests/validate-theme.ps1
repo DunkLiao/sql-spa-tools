@@ -27,6 +27,9 @@ foreach ($token in $requiredTokens) {
 
 foreach ($file in $htmlFiles) {
   $content = Get-Content -Raw -Encoding UTF8 $file.FullName
+  if ($content -match '\u83AB\u862D\u8FEA|\u96E2\u7DDA|offline|\u4E0D\u9023\u7DB2|\u7121\u7DB2\u8DEF|\u672A\u9023\u7DDA') {
+    throw "$($file.Name) still contains removed theme or offline copy"
+  }
   if ($content -notmatch '<link[^>]+href=["'']theme\.css["'']') {
     throw "$($file.Name) does not reference theme.css"
   }
@@ -49,16 +52,16 @@ if ($pii -notmatch "style-src 'self' 'unsafe-inline'") {
 }
 
 $formatter = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'sql-spa-tools-oracle-formatter.html')
-if ($formatter -notmatch 'background:#F1EEE9' -or $formatter -notmatch 'border:1px solid #D7D2CA') {
+if ($formatter -notmatch 'background:#f4f4f4' -or $formatter -notmatch 'border:1px solid #d1d1d1') {
   throw 'Formatter report does not use theme colors'
 }
 
 $compare = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'sql-spa-tools-sql-compare.html')
-if ($compare -notmatch 'background:#f1eee9' -or $compare -notmatch 'border:1px solid #d7d2ca') {
+if ($compare -notmatch 'background:#f4f4f4' -or $compare -notmatch 'border:1px solid #d1d1d1') {
   throw 'SQL Compare report does not use theme colors'
 }
 
-if ($catalog -notmatch 'background:#f1eee9' -or $catalog -notmatch 'color:#65747a') {
+if ($catalog -notmatch 'background:#f4f4f4' -or $catalog -notmatch 'color:#616161') {
   throw 'Catalog report does not use theme colors'
 }
 
@@ -66,7 +69,7 @@ if ($theme -notmatch 'header button:disabled' -or $theme -notmatch 'header butto
   throw 'Header disabled button contrast contract missing'
 }
 
-if ($theme -notmatch ':root\[data-theme=''dark''\]' -or $theme -notmatch '--theme-page:\s*#f1eee9') {
+if ($theme -notmatch ':root\[data-theme=''dark''\]' -or $theme -notmatch '--theme-page:\s*#f6f6f6' -or $theme -notmatch '--theme-primary:\s*#444444' -or $theme -notmatch '--theme-page:\s*#202020') {
   throw 'Light theme is not the default'
 }
 

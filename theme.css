@@ -1,31 +1,31 @@
-/* SQL SPA Tools - shared Morandi light theme */
+/* SQL SPA Tools - shared monochrome ink wash theme */
 :root {
   --theme-font-sans: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", system-ui, sans-serif;
   --theme-font-mono: "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
 
-  --theme-page: #f1eee9;
-  --theme-surface: #fbfaf7;
-  --theme-surface-alt: #e8e5df;
-  --theme-surface-soft: #f5f2ee;
-  --theme-text: #4a4946;
-  --theme-muted: #797771;
-  --theme-border: #d7d2ca;
-  --theme-border-soft: #e5e1db;
-  --theme-primary: #82938b;
-  --theme-primary-hover: #6f8279;
-  --theme-secondary: #9aa9b8;
-  --theme-secondary-soft: #e4eaee;
-  --theme-success: #78917d;
-  --theme-success-soft: #e3ecdf;
-  --theme-warning: #aa8d62;
-  --theme-warning-soft: #f1e8d7;
-  --theme-danger: #ad7774;
-  --theme-danger-soft: #f1dfdc;
-  --theme-info: #8197a8;
-  --theme-info-soft: #e3eaf0;
-  --theme-purple: #a697ac;
-  --theme-purple-soft: #ebe5ed;
-  --theme-shadow: 0 8px 24px rgb(74 69 62 / 11%);
+  --theme-page: #f6f6f6;
+  --theme-surface: #ffffff;
+  --theme-surface-alt: #ececec;
+  --theme-surface-soft: #f2f2f2;
+  --theme-text: #303030;
+  --theme-muted: #707070;
+  --theme-border: #d4d4d4;
+  --theme-border-soft: #e4e4e4;
+  --theme-primary: #444444;
+  --theme-primary-hover: #2e2e2e;
+  --theme-secondary: #777777;
+  --theme-secondary-soft: #e9e9e9;
+  --theme-success: #505050;
+  --theme-success-soft: #e6e6e6;
+  --theme-warning: #5c5c5c;
+  --theme-warning-soft: #dddddd;
+  --theme-danger: #333333;
+  --theme-danger-soft: #cecece;
+  --theme-info: #595959;
+  --theme-info-soft: #eeeeee;
+  --theme-purple: #777777;
+  --theme-purple-soft: #e9e9e9;
+  --theme-shadow: 0 8px 24px rgb(48 48 48 / 12%);
 
   /* Compatibility aliases for existing standalone pages. */
   --bg: var(--theme-page) !important;
@@ -45,7 +45,7 @@
   --pri-l: var(--theme-surface-soft) !important;
   --head: var(--theme-primary) !important;
   --focus: var(--theme-secondary) !important;
-  --acc: #b09a8d !important;
+  --acc: var(--theme-primary) !important;
   --ok: var(--theme-success) !important;
   --ok-bg: var(--theme-success-soft) !important;
   --warn: var(--theme-warning) !important;
@@ -53,7 +53,7 @@
   --err: var(--theme-danger) !important;
   --err-bg: var(--theme-danger-soft) !important;
   --danger: var(--theme-danger) !important;
-  --danger-h: #95625f !important;
+  --danger-h: var(--theme-primary-hover) !important;
   --info: var(--theme-info) !important;
   --sel: var(--theme-secondary-soft) !important;
   --hover: var(--theme-surface-soft) !important;
@@ -61,23 +61,23 @@
   --del: var(--theme-danger-soft) !important;
   --sage: var(--theme-primary) !important;
   --blue: var(--theme-secondary) !important;
-  --rose: #d2b8b2 !important;
-  --sand: #d8c8b5 !important;
+  --rose: var(--theme-danger-soft) !important;
+  --sand: var(--theme-surface-alt) !important;
   --purple: var(--theme-purple) !important;
   --gold: var(--theme-warning) !important;
   --gold-l: var(--theme-warning-soft) !important;
-  --navy: #65747a !important;
-  --navy-2: #788b8b !important;
+  --navy: var(--theme-text) !important;
+  --navy-2: var(--theme-muted) !important;
   --fuji: var(--theme-purple) !important;
   --fuji-l: var(--theme-purple-soft) !important;
   --take: var(--theme-success) !important;
   --sakura: var(--theme-danger-soft) !important;
   --cur: var(--theme-secondary-soft) !important;
-  --m-id: #e8d9b3 !important;
-  --m-acct: #e3c9c5 !important;
-  --m-seq: #c9d7e3 !important;
-  --m-sub: #c9d9ca !important;
-  --m-ban: #d8cbe0 !important;
+  --m-id: #e2e2e2 !important;
+  --m-acct: #d9d9d9 !important;
+  --m-seq: #d0d0d0 !important;
+  --m-sub: #c7c7c7 !important;
+  --m-ban: #bebebe !important;
 }
 
 body,
@@ -90,29 +90,29 @@ textarea {
 
 /* Light mode is the default; dark mode is opt-in via data-theme="dark". */
 :root[data-theme='dark'] {
-  --theme-page: #242622;
-  --theme-surface: #30332f;
-  --theme-surface-alt: #3b3f3a;
-  --theme-surface-soft: #454943;
-  --theme-text: #ebe9e3;
-  --theme-muted: #b7b6ae;
-  --theme-border: #5a5e57;
-  --theme-border-soft: #484c46;
-  --theme-primary: #8da69a;
-  --theme-primary-hover: #a8beb3;
-  --theme-secondary: #a8b7c3;
-  --theme-secondary-soft: #4c5962;
-  --theme-success: #9bb89f;
-  --theme-success-soft: #3f5645;
-  --theme-warning: #c4a878;
-  --theme-warning-soft: #5b4d36;
-  --theme-danger: #c9938e;
-  --theme-danger-soft: #5b3f3d;
-  --theme-info: #9fb5c6;
-  --theme-info-soft: #3f4e5a;
-  --theme-purple: #b8a9c0;
-  --theme-purple-soft: #51485a;
-  --theme-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  --theme-page: #202020;
+  --theme-surface: #2a2a2a;
+  --theme-surface-alt: #363636;
+  --theme-surface-soft: #404040;
+  --theme-text: #e9e9e9;
+  --theme-muted: #b9b9b9;
+  --theme-border: #545454;
+  --theme-border-soft: #454545;
+  --theme-primary: #5a5a5a;
+  --theme-primary-hover: #737373;
+  --theme-secondary: #aaa;
+  --theme-secondary-soft: #464646;
+  --theme-success: #c5c5c5;
+  --theme-success-soft: #464646;
+  --theme-warning: #d0d0d0;
+  --theme-warning-soft: #505050;
+  --theme-danger: #eeeeee;
+  --theme-danger-soft: #5a5a5a;
+  --theme-info: #b6b6b6;
+  --theme-info-soft: #414141;
+  --theme-purple: #aaa;
+  --theme-purple-soft: #464646;
+  --theme-shadow: 0 8px 24px rgb(0 0 0 / 38%);
   color-scheme: dark;
 }
 
@@ -128,7 +128,7 @@ body {
 
 header {
   background: var(--theme-primary) !important;
-  color: #fffdfb !important;
+  color: #fdfdfd !important;
   border-color: var(--theme-primary-hover) !important;
 }
 
@@ -137,7 +137,7 @@ header h1 small,
 header button,
 header .hint,
 header .root-badge {
-  color: #fffdfb !important;
+  color: #fdfdfd !important;
 }
 
 header button {
@@ -168,7 +168,7 @@ button.primary:hover,
 button.pri:hover,
 button.small.primary {
   background: var(--theme-primary) !important;
-  color: #fffdfb !important;
+  color: #fdfdfd !important;
   border-color: var(--theme-primary-hover) !important;
 }
 
@@ -182,8 +182,8 @@ button.secondary {
 
 button.danger {
   background: var(--theme-danger-soft) !important;
-  color: #784e4b !important;
-  border-color: #d2aaa5 !important;
+  color: var(--theme-danger) !important;
+  border-color: var(--theme-danger) !important;
 }
 
 input,
@@ -361,7 +361,7 @@ tr.sel,
 .stat-add,
 .sum-card.add {
   background: var(--theme-success-soft) !important;
-  color: #55705b !important;
+  color: var(--theme-success) !important;
 }
 
 .badge.del,
@@ -370,7 +370,7 @@ tr.sel,
 .stat-del,
 .sum-card.del {
   background: var(--theme-danger-soft) !important;
-  color: #824f4c !important;
+  color: var(--theme-danger) !important;
 }
 
 .badge.mod,
@@ -379,20 +379,20 @@ tr.sel,
 .stat-mod,
 .sum-card.mod {
   background: var(--theme-warning-soft) !important;
-  color: #806944 !important;
+  color: var(--theme-warning) !important;
 }
 
 .msg.info,
 .stat-info,
 .sum-card.info {
   background: var(--theme-info-soft) !important;
-  color: #5d7485 !important;
+  color: var(--theme-info) !important;
 }
 
 .toast,
 #toast {
-  background: #555e5a !important;
-  color: #fffdfb !important;
+  background: var(--theme-text) !important;
+  color: var(--theme-surface) !important;
 }
 
 mark,
@@ -473,4 +473,136 @@ header button:disabled {
     right: 16px;
     bottom: 62px;
   }
+}
+
+/* Legacy component states use the shared ink palette as well. */
+.qf button.on,
+.fi.sel {
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-primary) !important;
+}
+
+.stat.w b {
+  color: var(--theme-warning) !important;
+}
+
+mark.id {
+  background: var(--m-id) !important;
+}
+
+mark.acct {
+  background: var(--m-acct) !important;
+}
+
+mark.seq {
+  background: var(--m-seq) !important;
+}
+
+mark.sub {
+  background: var(--m-sub) !important;
+}
+
+mark.ban {
+  background: var(--m-ban) !important;
+}
+
+.l-使用中,
+.t-完成 {
+  background: var(--theme-success-soft) !important;
+  color: var(--theme-success) !important;
+}
+
+.l-草稿,
+.t-待處理 {
+  background: var(--theme-warning-soft) !important;
+  color: var(--theme-warning) !important;
+}
+
+.l-停用 {
+  background: var(--theme-surface-alt) !important;
+  color: var(--theme-muted) !important;
+}
+
+.l-遺失 {
+  background: var(--theme-danger-soft) !important;
+  color: var(--theme-danger) !important;
+}
+
+.t-處理中 {
+  background: var(--theme-info-soft) !important;
+  color: var(--theme-info) !important;
+}
+
+.message {
+  background: var(--theme-surface) !important;
+  border-color: var(--theme-border) !important;
+  color: var(--theme-text) !important;
+}
+
+.message.warn {
+  border-left-color: var(--theme-warning) !important;
+}
+
+.message.error {
+  border-left-color: var(--theme-danger) !important;
+}
+
+.message .count {
+  background: var(--theme-surface-alt) !important;
+}
+
+.modal .mh {
+  background: var(--theme-surface-alt) !important;
+  color: var(--theme-text) !important;
+  border-bottom-color: var(--theme-primary) !important;
+}
+
+.modal .mh .x {
+  color: var(--theme-text) !important;
+}
+
+.modal .mh .x:hover {
+  color: var(--theme-primary) !important;
+}
+
+.modal .mf,
+.suggest,
+.bars .b .t,
+#progress .pb {
+  background: var(--theme-surface-alt) !important;
+}
+
+.suggest {
+  color: var(--theme-info) !important;
+  border-color: var(--theme-info) !important;
+}
+
+.bars .b .t i,
+#progress .pb i {
+  background: var(--theme-primary) !important;
+}
+
+#progress {
+  border-top-color: var(--theme-primary) !important;
+}
+
+.toast {
+  border-left-color: var(--theme-primary) !important;
+}
+
+.toast.error {
+  background: var(--theme-danger-soft) !important;
+  color: var(--theme-danger) !important;
+  border-left-color: var(--theme-danger) !important;
+}
+
+.toast.ok {
+  background: var(--theme-success-soft) !important;
+  color: var(--theme-success) !important;
+  border-left-color: var(--theme-success) !important;
+}
+
+.mask {
+  background: rgb(32 32 32 / 50%) !important;
 }

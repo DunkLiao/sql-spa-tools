@@ -7,55 +7,55 @@
 <title>SQL SPA Tools｜Oracle SQL Compare</title>
 <style>
 *{box-sizing:border-box}
-input[type=checkbox],input[type=radio]{accent-color:#8a9a92}
+input[type=checkbox],input[type=radio]{accent-color:#616161}
 html,body{margin:0;height:100%}
-body{font-family:var(--theme-font-sans);font-size:14px;color:#4a4540;background:#f1ede7;display:flex;flex-direction:column}
-header{background:#8a9a92;color:#fdfcfa;padding:8px 16px;display:flex;align-items:center;gap:12px}
+body{font-family:var(--theme-font-sans);font-size:14px;color:#464646;background:#f4f4f4;display:flex;flex-direction:column}
+header{background:#616161;color:#fefefe;padding:8px 16px;display:flex;align-items:center;gap:12px}
 header h1{font-size:17px;margin:0;font-weight:600}
 header .ver{font-size:12px;opacity:.7}
 header .sp{flex:1}
 header .hint{font-size:12px;opacity:.8}
-.toolbar{background:#fdfcfa;border-bottom:1px solid #e2ddd5;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
-.toolbar .grp{display:flex;gap:10px;align-items:center;padding-right:14px;border-right:1px solid #e8e3dc}
+.toolbar{background:#fefefe;border-bottom:1px solid #d1d1d1;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.toolbar .grp{display:flex;gap:10px;align-items:center;padding-right:14px;border-right:1px solid #e4e4e4}
 .toolbar .grp:last-child{border-right:none}
 .toolbar label{cursor:pointer;user-select:none;white-space:nowrap}
-.toolbar .ttl{font-size:12px;color:#6f6a64}
-button{font:inherit;border:1px solid #d3ccc2;background:#f5f2ed;border-radius:6px;padding:4px 12px;cursor:pointer;white-space:nowrap}
-button:hover{background:#ebe6df}
-button.primary{background:#7d93a6;border-color:#7d93a6;color:#fdfcfa;font-weight:600}
-button.primary:hover{background:#6a8195}
+.toolbar .ttl{font-size:12px;color:#6b6b6b}
+button{font:inherit;border:1px solid #d1d1d1;background:#efefef;border-radius:6px;padding:4px 12px;cursor:pointer;white-space:nowrap}
+button:hover{background:#eaeaea}
+button.primary{background:#616161;border-color:#616161;color:#fefefe;font-weight:600}
+button.primary:hover{background:#505050}
 button:disabled{opacity:.45;cursor:default}
-select{font:inherit;padding:3px 4px;border-radius:6px;border:1px solid #d3ccc2}
+select{font:inherit;padding:3px 4px;border-radius:6px;border:1px solid #d1d1d1}
 main{flex:1;min-height:0;display:flex;flex-direction:column}
 #editView{flex:1;min-height:0;display:flex;gap:10px;padding:10px 16px}
-.pane{flex:1;min-width:0;display:flex;flex-direction:column;background:#fdfcfa;border:1px solid #e2ddd5;border-radius:8px;overflow:hidden}
-.pane.drag{outline:3px dashed #7d93a6;outline-offset:-3px}
-.pane-hd{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f5f2ed;border-bottom:1px solid #e2ddd5}
+.pane{flex:1;min-width:0;display:flex;flex-direction:column;background:#fefefe;border:1px solid #d1d1d1;border-radius:8px;overflow:hidden}
+.pane.drag{outline:3px dashed #616161;outline-offset:-3px}
+.pane-hd{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#efefef;border-bottom:1px solid #d1d1d1}
 .pane-hd b{font-size:13px}
-.pane-hd .fname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6f6a64;font-size:12px}
-.pane-hd .cnt{font-size:12px;color:#6f6a64}
+.pane-hd .fname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6b6b6b;font-size:12px}
+.pane-hd .cnt{font-size:12px;color:#6b6b6b}
 .pane textarea{flex:1;border:none;resize:none;padding:8px 10px;font-family:var(--theme-font-mono);font-size:13px;line-height:1.5;outline:none;white-space:pre;overflow:auto;tab-size:4}
 #resultView{flex:1;min-height:0;display:none;flex-direction:column}
-#resultInfo{padding:6px 16px;background:#fdfcfa;border-bottom:1px solid #e2ddd5;display:flex;gap:16px;align-items:center;font-size:13px;flex-wrap:wrap}
-#resultInfo .files{color:#6f6a64;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#resultScroll{flex:1;min-height:0;overflow:auto;background:#fdfcfa}
+#resultInfo{padding:6px 16px;background:#fefefe;border-bottom:1px solid #d1d1d1;display:flex;gap:16px;align-items:center;font-size:13px;flex-wrap:wrap}
+#resultInfo .files{color:#6b6b6b;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#resultScroll{flex:1;min-height:0;overflow:auto;background:#fefefe}
 .tabs{display:flex;gap:4px}
 .tab{border-radius:6px;padding:3px 12px;font-size:13px}
-.tab.on{background:#8a9a92;border-color:#8a9a92;color:#fdfcfa}
-.tab .bdg{display:inline-block;min-width:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:#b89b6a;color:#fdfcfa;font-size:11px;line-height:16px;text-align:center}
-.tab .bdg.zero{background:#a39d95}
+.tab.on{background:#616161;border-color:#616161;color:#fefefe}
+.tab .bdg{display:inline-block;min-width:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:#616161;color:#fefefe;font-size:11px;line-height:16px;text-align:center}
+.tab .bdg.zero{background:#6e6e6e}
 #summaryBody{display:none}
-#identical{display:none;padding:40px;text-align:center;font-size:16px;color:#6b8f71}
-footer{background:#fdfcfa;border-top:1px solid #e2ddd5;padding:6px 16px;display:flex;gap:16px;align-items:center;font-size:13px}
+#identical{display:none;padding:40px;text-align:center;font-size:16px;color:#727272}
+footer{background:#fefefe;border-top:1px solid #d1d1d1;padding:6px 16px;display:flex;gap:16px;align-items:center;font-size:13px}
 footer .sp{flex:1}
-.stat-add{color:#6b8f71;font-weight:600}.stat-del{color:#b5727a;font-weight:600}.stat-mod{color:#9c8155;font-weight:600}.stat-skip{color:#a39d95}.stat-mv{color:#9a88aa;font-weight:600}
-#toast{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:#4a4540;color:#fdfcfa;padding:8px 18px;border-radius:6px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9}
+.stat-add{color:#727272;font-weight:600}.stat-del{color:#696969;font-weight:600}.stat-mod{color:#797979;font-weight:600}.stat-skip{color:#6e6e6e}.stat-mv{color:#8f8f8f;font-weight:600}
+#toast{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:#464646;color:#fefefe;padding:8px 18px;border-radius:6px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9}
 #toast.show{opacity:.92}
 </style>
 </head>
 <body>
 <header>
-  <h1>SQL SPA Tools｜Oracle SQL Compare</h1><span class="ver">純離線 · 莫蘭迪</span>
+  <h1>SQL SPA Tools｜Oracle SQL Compare</h1><span class="ver">SQL 差異比對</span>
   <span class="sp"></span>
   <span class="hint">Ctrl+Enter 比對 ｜ F7 / Shift+F7 跳差異 ｜ Alt+1 / Alt+2 切換頁籤 ｜ Esc 返回編輯</span>
 </header>
@@ -103,7 +103,7 @@ footer .sp{flex:1}
     </div>
   </div>
   <div id="resultView">
-    <div id="resultInfo"><div class="tabs"><button class="tab on" id="tabDiff" data-tab="diff">逐行差異</button><button class="tab" id="tabSum" data-tab="sum">結構差異摘要<span class="bdg" id="sumBadge"></span></button></div><span class="files" id="resFiles"></span><span id="resOpts" style="color:#6f6a64;font-size:12px"></span></div>
+    <div id="resultInfo"><div class="tabs"><button class="tab on" id="tabDiff" data-tab="diff">逐行差異</button><button class="tab" id="tabSum" data-tab="sum">結構差異摘要<span class="bdg" id="sumBadge"></span></button></div><span class="files" id="resFiles"></span><span id="resOpts" style="color:#6b6b6b;font-size:12px"></span></div>
     <div id="resultScroll"><div id="identical">✔ 依目前比對選項，兩邊內容完全相同</div><div id="resultBody"></div><div id="summaryBody"></div></div>
   </div>
 </main>
@@ -1189,55 +1189,55 @@ if (typeof module !== 'undefined') module.exports = { myers, diffSeq, maskSql, p
 const DIFF_CSS = `
 table.diff{border-collapse:collapse;width:100%;font-family:var(--theme-font-mono);font-size:13px;line-height:1.5;table-layout:fixed}
 table.diff td{padding:0 6px;vertical-align:top}
-table.diff td.ln{width:52px;text-align:right;color:#a39d95;background:#f5f2ed;user-select:none;border-right:1px solid #e8e3dc}
-table.diff td.mk{width:20px;text-align:center;color:#a39d95;user-select:none}
+table.diff td.ln{width:52px;text-align:right;color:#6e6e6e;background:#efefef;user-select:none;border-right:1px solid #e4e4e4}
+table.diff td.mk{width:20px;text-align:center;color:#6e6e6e;user-select:none}
 table.diff td.code{white-space:pre;overflow:hidden}
 table.diff.wrap td.code{white-space:pre-wrap;word-break:break-all}
-table.diff td.sep{border-left:2px solid #ddd7ce}
-tr.del td.cl,tr.del td.code.cl{background:#f4e6e3} tr.del td.cl .hl,tr.mod td.cl .hl{background:#d4a5a07a;border-radius:2px}
-tr.add td.cr,tr.add td.code.cr{background:#e3ece0} tr.add td.cr .hl,tr.mod td.cr .hl{background:#9dbb9580;border-radius:2px}
-tr.mod td.cl{background:#f4e6e3} tr.mod td.cr{background:#e3ece0}
-tr.del td.ln.cl,tr.mod td.ln.cl{background:#ead2ce} tr.add td.ln.cr,tr.mod td.ln.cr{background:#d3e2cf}
-tr.del td.cr.code,tr.add td.cl.code{background:repeating-linear-gradient(135deg,#f5f2ed,#f5f2ed 4px,#efebe5 4px,#efebe5 8px)}
-tr.skip td{color:#aaa39a;font-style:italic}
-tr.skip td.code.on{background:#f9f7f3}
-tr.eq.soft td.mk{color:#b89b6a}
-tr.fold td{background:#e4ebf0;color:#6f8aa0;text-align:center;cursor:pointer;font-family:var(--theme-font-sans);font-size:12px;padding:2px}
-tr.fold:hover td{background:#d2dee7}
-tr.cur td.mk{background:#f6efdc}
-tr.cur td.ln{box-shadow:inset 3px 0 0 #c4a878}
-tr.mv td.code.cl,tr.mv td.code.cr{background:#ece6f0} tr.mv td.ln.cl,tr.mv td.ln.cr{background:#ddd3e5} tr.mv td.mk{color:#9a88aa;font-weight:700}
+table.diff td.sep{border-left:2px solid #d8d8d8}
+tr.del td.cl,tr.del td.code.cl{background:#e8e8e8} tr.del td.cl .hl,tr.mod td.cl .hl{background:#8d8d8d7a;border-radius:2px}
+tr.add td.cr,tr.add td.code.cr{background:#e9e9e9} tr.add td.cr .hl,tr.mod td.cr .hl{background:#b0b0b080;border-radius:2px}
+tr.mod td.cl{background:#e8e8e8} tr.mod td.cr{background:#e9e9e9}
+tr.del td.ln.cl,tr.mod td.ln.cl{background:#e8e8e8} tr.add td.ln.cr,tr.mod td.ln.cr{background:#e9e9e9}
+tr.del td.cr.code,tr.add td.cl.code{background:repeating-linear-gradient(135deg,#efefef,#efefef 4px,#ebebeb 4px,#ebebeb 8px)}
+tr.skip td{color:#a4a4a4;font-style:italic}
+tr.skip td.code.on{background:#f7f7f7}
+tr.eq.soft td.mk{color:#616161}
+tr.fold td{background:#eaeaea;color:#757575;text-align:center;cursor:pointer;font-family:var(--theme-font-sans);font-size:12px;padding:2px}
+tr.fold:hover td{background:#dedede}
+tr.cur td.mk{background:#ebebeb}
+tr.cur td.ln{box-shadow:inset 3px 0 0 #acacac}
+tr.mv td.code.cl,tr.mv td.code.cr{background:#e8e8e8} tr.mv td.ln.cl,tr.mv td.ln.cr{background:#d3d3d3} tr.mv td.mk{color:#8f8f8f;font-weight:700}
 tr.flash td{animation:flash 1.8s ease-out}
-@keyframes flash{0%,35%{box-shadow:inset 0 0 0 999px #efe2bf99}}
-.sum{padding:12px 16px;background:#f5f2ed;font-family:var(--theme-font-sans)}
+@keyframes flash{0%,35%{box-shadow:inset 0 0 0 999px #e3e3e399}}
+.sum{padding:12px 16px;background:#efefef;font-family:var(--theme-font-sans)}
 .sum-ov{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.sum-card{background:#fdfcfa;border:1px solid #e2ddd5;border-radius:8px;padding:6px 14px;min-width:92px}
+.sum-card{background:#fefefe;border:1px solid #d1d1d1;border-radius:8px;padding:6px 14px;min-width:92px}
 .sum-card .v{font-size:20px;font-weight:700;line-height:1.3}
-.sum-card .l{font-size:12px;color:#6f6a64}
-.sum-card.eq .v{color:#6f6a64}.sum-card.mod .v{color:#9c8155}.sum-card.add .v{color:#6b8f71}.sum-card.del .v{color:#b5727a}.sum-card.warn .v{color:#b07d5b}
-.sum-none{background:#fdfcfa;border:1px solid #e2ddd5;border-radius:8px;padding:28px;text-align:center;color:#6b8f71;font-size:15px}
-.sec{background:#fdfcfa;border:1px solid #e2ddd5;border-radius:8px;margin-bottom:12px;overflow:hidden}
-.sec-hd{padding:7px 12px;background:#f5f2ed;border-bottom:1px solid #e2ddd5;display:flex;gap:10px;align-items:center}
-.sec-hd .badge{font-size:12px;padding:1px 9px;border-radius:10px;color:#fdfcfa;white-space:nowrap}
-.badge.mod{background:#b89b6a}.badge.add{background:#6b8f71}.badge.del{background:#b5727a}.badge.oth{background:#9a948c}
+.sum-card .l{font-size:12px;color:#6b6b6b}
+.sum-card.eq .v{color:#6b6b6b}.sum-card.mod .v{color:#797979}.sum-card.add .v{color:#727272}.sum-card.del .v{color:#696969}.sum-card.warn .v{color:#888888}
+.sum-none{background:#fefefe;border:1px solid #d1d1d1;border-radius:8px;padding:28px;text-align:center;color:#727272;font-size:15px}
+.sec{background:#fefefe;border:1px solid #d1d1d1;border-radius:8px;margin-bottom:12px;overflow:hidden}
+.sec-hd{padding:7px 12px;background:#efefef;border-bottom:1px solid #d1d1d1;display:flex;gap:10px;align-items:center}
+.sec-hd .badge{font-size:12px;padding:1px 9px;border-radius:10px;color:#fefefe;white-space:nowrap}
+.badge.mod{background:#616161}.badge.add{background:#727272}.badge.del{background:#696969}.badge.oth{background:#959595}
 .sec-hd .lbl{font-family:var(--theme-font-mono);font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sec-hd .loc{font-size:12px;color:#6f8aa0;white-space:nowrap}
+.sec-hd .loc{font-size:12px;color:#757575;white-space:nowrap}
 .sec-hd .loc[data-ln]{cursor:pointer;text-decoration:underline dotted}
 table.sumt{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
-table.sumt th{text-align:left;font-weight:600;color:#6f6a64;font-size:12px;padding:4px 8px;border-bottom:1px solid #e8e3dc;background:#f9f7f3}
-table.sumt td{padding:4px 8px;border-bottom:1px solid #efebe5;vertical-align:top}
-table.sumt td.c{color:#6f6a64;font-size:12px;word-break:break-all}
+table.sumt th{text-align:left;font-weight:600;color:#6b6b6b;font-size:12px;padding:4px 8px;border-bottom:1px solid #e4e4e4;background:#f7f7f7}
+table.sumt td{padding:4px 8px;border-bottom:1px solid #ebebeb;vertical-align:top}
+table.sumt td.c{color:#6b6b6b;font-size:12px;word-break:break-all}
 table.sumt td.k{text-align:center;font-weight:700}
 table.sumt td.a,table.sumt td.b{font-family:var(--theme-font-mono);white-space:pre-wrap;word-break:break-all}
 table.sumt td.t{white-space:normal}
-tr.k-add td.k{color:#6b8f71} tr.k-del td.k{color:#b5727a} tr.k-mod td.k{color:#9c8155} tr.k-info td.k{color:#6f8aa0} tr.k-warn td.k{color:#b07d5b}
-tr.k-add td.b{background:#e3ece0} tr.k-del td.a{background:#f4e6e3} tr.k-mod td.a{background:#f7ecea} tr.k-mod td.b{background:#eef3ec}
-tr.k-warn td{background:#f6efdc} tr.k-info td.t{color:#5f7a90}
-.note{font-family:var(--theme-font-sans);font-size:12px;color:#6f6a64;margin-top:2px;white-space:normal}
-.note.w{color:#b07d5b;font-weight:600}
+tr.k-add td.k{color:#727272} tr.k-del td.k{color:#696969} tr.k-mod td.k{color:#797979} tr.k-info td.k{color:#757575} tr.k-warn td.k{color:#888888}
+tr.k-add td.b{background:#e9e9e9} tr.k-del td.a{background:#e8e8e8} tr.k-mod td.a{background:#eeeeee} tr.k-mod td.b{background:#e9e9e9}
+tr.k-warn td{background:#ebebeb} tr.k-info td.t{color:#777777}
+.note{font-family:var(--theme-font-sans);font-size:12px;color:#6b6b6b;margin-top:2px;white-space:normal}
+.note.w{color:#888888;font-weight:600}
 tr.jump{cursor:pointer} tr.jump:hover td{filter:brightness(.96)}
-pre.sum-code{margin:0;padding:8px 12px;font-family:var(--theme-font-mono);font-size:12.5px;white-space:pre-wrap;word-break:break-all;max-height:240px;overflow:auto;color:#4a4540}
-.sec.add pre.sum-code{background:#eef3ec}.sec.del pre.sum-code{background:#f8eeec}
+pre.sum-code{margin:0;padding:8px 12px;font-family:var(--theme-font-mono);font-size:12.5px;white-space:pre-wrap;word-break:break-all;max-height:240px;overflow:auto;color:#464646}
+.sec.add pre.sum-code{background:#e9e9e9}.sec.del pre.sum-code{background:#e8e8e8}
 `;
 document.head.insertAdjacentHTML('beforeend', '<style>' + DIFF_CSS + '</style>');
 
@@ -1435,7 +1435,7 @@ function summaryHtml(S, interactive) {
 }
 function renderSummary() {
   const res = state.res, el = $('summaryBody'), bd = $('sumBadge');
-  if (!res.sum) { el.innerHTML = `<div class="sum"><div class="sum-none" style="color:#b5727a">結構解析失敗：${escHtml(res.sumErr || '未知錯誤')}（逐行差異不受影響）</div></div>`; bd.textContent = '!'; bd.className = 'bdg'; return; }
+  if (!res.sum) { el.innerHTML = `<div class="sum"><div class="sum-none" style="color:#696969">結構解析失敗：${escHtml(res.sumErr || '未知錯誤')}（逐行差異不受影響）</div></div>`; bd.textContent = '!'; bd.className = 'bdg'; return; }
   el.innerHTML = summaryHtml(res.sum, true);
   const c = sumCounts(res.sum), n = c.mod + c.add + c.del + (res.sum.secs.some(s => s.st === 'oth') ? 1 : 0);
   bd.textContent = n; bd.className = 'bdg' + (n ? '' : ' zero');
@@ -1476,7 +1476,7 @@ function exportHtml() {
   const nA = state.names.A || '舊版（貼上內容）', nB = state.names.B || '新版（貼上內容）';
   const tbl = $('diffTable') ? $('diffTable').outerHTML.replace(/\s(cur|flash)\b/g, '').replace(/ class="(cur|flash)"/g, '') : '';
   const doc = `<!DOCTYPE html><html lang="zh-Hant-TW"><head><meta charset="UTF-8"><title>SQL 差異報表 ${escHtml(nA)} vs ${escHtml(nB)}</title>
-<style>:root{--theme-font-sans:"Microsoft JhengHei","PingFang TC","Noto Sans TC","Noto Sans CJK TC",system-ui,sans-serif;--theme-font-mono:"Cascadia Mono",Consolas,"SFMono-Regular",monospace}body{font-family:var(--theme-font-sans);margin:20px;color:#4a4946;background:#f1eee9}h1{font-size:20px;color:#65747a}h2{font-size:16px;margin:22px 0 0;color:#6f8279}table.meta td{padding:2px 12px 2px 0;font-size:14px}.wrapd{border:1px solid #d7d2ca;border-radius:6px;overflow:hidden;margin-top:14px}${DIFF_CSS}.diff-theme{background:#fbfaf7;color:#4a4946}.wrapd tr.del td.cl,.wrapd tr.mod td.cl{background:#f1dfdc}.wrapd tr.add td.cr,.wrapd tr.mod td.cr{background:#e3ecdf}</style></head><body>
+<style>:root{--theme-font-sans:"Microsoft JhengHei","PingFang TC","Noto Sans TC","Noto Sans CJK TC",system-ui,sans-serif;--theme-font-mono:"Cascadia Mono",Consolas,"SFMono-Regular",monospace}body{font-family:var(--theme-font-sans);margin:20px;color:#2f2f2f;background:#f4f4f4}h1{font-size:20px;color:#616161}h2{font-size:16px;margin:22px 0 0;color:#505050}table.meta td{padding:2px 12px 2px 0;font-size:14px}.wrapd{border:1px solid #d1d1d1;border-radius:6px;overflow:hidden;margin-top:14px}${DIFF_CSS}.diff-theme{background:#fefefe;color:#2f2f2f}.wrapd tr.del td.cl,.wrapd tr.mod td.cl{background:#e8e8e8}.wrapd tr.add td.cr,.wrapd tr.mod td.cr{background:#e9e9e9}</style></head><body>
 <h1>Oracle SQL 差異報表</h1>
 <table class="meta">
 <tr><td>舊版</td><td>${escHtml(nA)}（${s.linesA} 行）</td></tr>

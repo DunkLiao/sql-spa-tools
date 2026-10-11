@@ -1,6 +1,6 @@
 # SQL SPA Tools 配色規範與引用說明
 
-本文件定義 SQL SPA Tools 全站共用的莫蘭迪淺色系主題。所有工具頁面應使用根目錄的 [`theme.css`](../theme.css)，避免各頁重新建立不同的背景、文字、按鈕與狀態色。
+本文件定義 SQL SPA Tools 全站共用的水墨黑白主題。所有工具頁面應使用根目錄的 [`theme.css`](../theme.css)，避免各頁重新建立不同的背景、文字、按鈕與狀態色。
 
 ## 適用頁面
 
@@ -20,10 +20,10 @@
 
 ## 設計原則
 
-1. 以暖灰米白作為頁面基底，搭配灰綠、灰藍與低飽和土色。
+1. 以黑、白、灰階建立頁面基底、文字與介面層次。
 2. 背景、面板、表單、按鈕與邊框應使用共用 token，不直接寫死新的色碼。
-3. 成功、警告、錯誤與資訊仍保留可辨識的語意色，但降低飽和度。
-4. 不使用純黑作為一般文字，也不以高飽和紅、黃、藍作為主要 UI 色。
+3. 成功、警告、錯誤與資訊均使用黑、白、灰階，不以色相區分狀態。
+4. 狀態差異透過明暗、文字與圖示表達，並維持明暗主題下的可讀性。
 5. 匯出報表、列印頁與 SVG 等離開主頁面的輸出，必須使用相同的主題色。
 6. 顏色變更不應影響既有版面、互動流程或資料處理行為。
 
@@ -58,21 +58,23 @@
 
 | Token | 色碼 | 用途 |
 | --- | --- | --- |
-| `--theme-page` | `#f1eee9` | 全頁背景 |
-| `--theme-surface` | `#fbfaf7` | 卡片、面板、輸入框 |
-| `--theme-surface-alt` | `#e8e5df` | 表頭、工具列、次級區塊 |
-| `--theme-surface-soft` | `#f5f2ee` | hover、程式碼區、柔和底色 |
-| `--theme-text` | `#4a4946` | 主要文字 |
-| `--theme-muted` | `#797771` | 輔助文字、說明文字 |
-| `--theme-border` | `#d7d2ca` | 主要邊框與分隔線 |
-| `--theme-border-soft` | `#e5e1db` | 表格細線、次要分隔線 |
-| `--theme-primary` | `#82938b` | 主要操作、頁首、選取重點 |
-| `--theme-primary-hover` | `#6f8279` | 主要操作 hover、強調邊框 |
-| `--theme-secondary` | `#9aa9b8` | 輔助操作、focus、灰藍重點 |
-| `--theme-secondary-soft` | `#e4eaee` | 灰藍背景、選取狀態 |
-| `--theme-purple` | `#a697ac` | 血緣／分類等次要識別 |
-| `--theme-purple-soft` | `#ebe5ed` | 紫灰背景 |
-| `--theme-shadow` | `0 8px 24px rgb(74 69 62 / 11%)` | 浮動面板陰影 |
+| `--theme-page` | `#f6f6f6` | 全頁背景 |
+| `--theme-surface` | `#ffffff` | 卡片、面板、輸入框 |
+| `--theme-surface-alt` | `#ececec` | 表頭、工具列、次級區塊 |
+| `--theme-surface-soft` | `#f2f2f2` | hover、程式碼區、柔和底色 |
+| `--theme-text` | `#303030` | 主要文字 |
+| `--theme-muted` | `#707070` | 輔助文字、說明文字 |
+| `--theme-border` | `#d4d4d4` | 主要邊框與分隔線 |
+| `--theme-border-soft` | `#e4e4e4` | 表格細線、次要分隔線 |
+| `--theme-primary` | `#444444` | 主要操作、頁首、選取重點 |
+| `--theme-primary-hover` | `#2e2e2e` | 主要操作 hover、強調邊框 |
+| `--theme-secondary` | `#777777` | 輔助操作、focus、灰階重點 |
+| `--theme-secondary-soft` | `#e9e9e9` | 灰階背景、選取狀態 |
+| `--theme-purple` | `#777777` | 血緣／分類等次要識別 |
+| `--theme-purple-soft` | `#e9e9e9` | 灰階背景 |
+| `--theme-shadow` | `0 8px 24px rgb(48 48 48 / 12%)` | 浮動面板陰影 |
+
+主題使用黑、白與灰階呈現水墨層次。成功、警告、錯誤與資訊狀態透過不同深淺的灰階及狀態文字區分，並確保明暗主題下均清楚可讀。
 
 ## 語意色規範
 
@@ -80,10 +82,10 @@
 
 | 狀態 | 文字／邊框 | 背景 | 使用情境 |
 | --- | --- | --- | --- |
-| 成功 | `--theme-success` `#78917d` | `--theme-success-soft` `#e3ecdf` | 完成、通過、已寫回、增加 |
-| 警告 | `--theme-warning` `#aa8d62` | `--theme-warning-soft` `#f1e8d7` | 注意、待確認、修改 |
-| 錯誤 | `--theme-danger` `#ad7774` | `--theme-danger-soft` `#f1dfdc` | 失敗、刪除、錯誤、危險操作 |
-| 資訊 | `--theme-info` `#8197a8` | `--theme-info-soft` `#e3eaf0` | 提示、說明、資訊摘要 |
+| 成功 | `--theme-success` `#505050` | `--theme-success-soft` `#e6e6e6` | 完成、通過、已寫回、增加 |
+| 警告 | `--theme-warning` `#5c5c5c` | `--theme-warning-soft` `#dddddd` | 注意、待確認、修改 |
+| 錯誤 | `--theme-danger` `#333333` | `--theme-danger-soft` `#cecece` | 失敗、刪除、錯誤、危險操作 |
+| 資訊 | `--theme-info` `#595959` | `--theme-info-soft` `#eeeeee` | 提示、說明、資訊摘要 |
 
 範例：
 
@@ -152,7 +154,7 @@
 
 - Header 使用 `--theme-primary`，文字使用淺色。
 - Toolbar、Footer、次級導覽使用 `--theme-surface` 或 `--theme-surface-alt`。
-- 不應在不同頁面重新引入深藍、酒紅、金色等高對比品牌色。
+- 不應在不同頁面重新引入彩色主題或高飽和裝飾色。
 
 ## CSP 與離線引用
 
@@ -171,7 +173,7 @@ script-src 'self' 'unsafe-inline'
 
 - 報表內嵌 CSS 應使用與主題相同的固定色碼。
 - SVG 節點、連線與標記應使用主題對應色。
-- 匯出樣式不得恢復成原本的深色、金色或高飽和色盤。
+- 匯出樣式應維持黑、白、灰階，不得使用與共用主題不一致的色盤。
 - 修改主題色時，應同步搜尋各 HTML 內的報表模板與 SVG 色彩設定。
 
 ## 驗證方式
@@ -194,4 +196,4 @@ node '.\tests\test-theme.js'
 - 具有 CSP 的頁面是否允許同目錄樣式檔。
 - Formatter、Catalog、SQL Compare 的動態報表是否包含共用主題色。
 
-完成樣式調整後，仍應在瀏覽器實際開啟入口頁與 5 個工具頁面，確認一般狀態、hover、focus、disabled、成功、警告、錯誤與匯出畫面均維持一致。
+完成樣式調整後，應在瀏覽器實際開啟入口頁與各工具頁面，確認一般狀態、hover、focus、disabled、成功、警告、錯誤與匯出畫面均維持一致。
