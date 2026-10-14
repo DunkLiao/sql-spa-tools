@@ -55,6 +55,7 @@ sql-spa-tools-<功能識別字>.html
 | SQLScriptManage | `sql-spa-tools-sqlscriptmanage.html` |
 | Excel／CSV 轉 SQL | `sql-spa-tools-excel-csv-sql.html` |
 | Excel／CSV 轉 SQL CTE | `sql-spa-tools-excel-csv-sql-cte.html` |
+| SQL Lab | `sql-spa-tools-sql-lab.html` |
 
 ## 新增頁面
 
