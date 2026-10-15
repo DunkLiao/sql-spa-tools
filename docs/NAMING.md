@@ -25,6 +25,9 @@ SQL SPA Tools｜功能名稱
 | SQLScriptManage | `SQL SPA Tools｜SQLScriptManage` |
 | Excel／CSV 轉 SQL | `SQL SPA Tools｜Excel／CSV 轉 SQL` |
 | Excel／CSV 轉 SQL CTE | `SQL SPA Tools｜Excel／CSV 轉 SQL CTE` |
+| SQL Lab | `SQL SPA Tools｜SQL Lab` |
+| 資料品質稽核中心 | `SQL SPA Tools｜資料品質稽核中心` |
+| 資料關聯探索器 | `SQL SPA Tools｜資料關聯探索器` |
 
 ## HTML 檔名
 
@@ -56,6 +59,8 @@ sql-spa-tools-<功能識別字>.html
 | Excel／CSV 轉 SQL | `sql-spa-tools-excel-csv-sql.html` |
 | Excel／CSV 轉 SQL CTE | `sql-spa-tools-excel-csv-sql-cte.html` |
 | SQL Lab | `sql-spa-tools-sql-lab.html` |
+| 資料品質稽核中心 | `sql-spa-tools-data-quality-audit-center.html` |
+| 資料關聯探索器 | `sql-spa-tools-data-relationship-explorer.html` |
 
 ## 新增頁面
 

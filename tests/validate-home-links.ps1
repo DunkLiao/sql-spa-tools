@@ -10,7 +10,9 @@ $toolPages = @(
   'sql-spa-tools-sqlscriptmanage.html',
   'sql-spa-tools-excel-csv-sql.html',
   'sql-spa-tools-excel-csv-sql-cte.html',
-  'sql-spa-tools-sql-lab.html'
+  'sql-spa-tools-sql-lab.html',
+  'sql-spa-tools-data-quality-audit-center.html',
+  'sql-spa-tools-data-relationship-explorer.html'
 )
 
 foreach ($page in $toolPages) {
