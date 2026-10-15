@@ -31,7 +31,8 @@ $targets = @(
   'sql-spa-tools-excel-csv-sql-cte.html',
   'sql-spa-tools-sql-lab.html',
   'sql-spa-tools-data-quality-audit-center.html',
-  'sql-spa-tools-data-relationship-explorer.html'
+  'sql-spa-tools-data-relationship-explorer.html',
+  'sql-spa-tools-schema-studio.html'
 )
 foreach ($target in $targets) {
   if ($html -notmatch ('href=["'']' + [regex]::Escape($target) + '["'']')) {
@@ -39,8 +40,8 @@ foreach ($target in $targets) {
   }
 }
 
-if (($html | Select-String -Pattern 'class=["'']tool-card["'']' -AllMatches).Matches.Count -ne 11) {
-  throw 'index.html must contain eleven tool cards'
+if (($html | Select-String -Pattern 'class=["'']tool-card["'']' -AllMatches).Matches.Count -ne 12) {
+  throw 'index.html must contain twelve tool cards'
 }
 
-Write-Output 'Index contract passed: title, theme, toggle, eleven tool links'
+Write-Output 'Index contract passed: title, theme, toggle, twelve tool links'

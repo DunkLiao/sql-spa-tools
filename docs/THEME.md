@@ -18,6 +18,7 @@
 - `sql-spa-tools-sql-compare.html`
 - `sql-spa-tools-data-quality-audit-center.html`
 - `sql-spa-tools-data-relationship-explorer.html`
+- `sql-spa-tools-schema-studio.html`
 
 頁面與 `theme.css` 必須位於同一個資料夾，才能支援直接以瀏覽器開啟 HTML 的離線使用方式。
 
@@ -192,9 +193,9 @@ node '.\tests\test-theme.js'
 
 - `theme.css` 是否存在且包含核心 token。
 - `theme.js` 是否存在且使用 `sql_spa_tools_theme` 儲存模式。
-- 12 個 HTML 是否引用 `theme.css`。
-- 12 個 HTML 是否都包含 `themeToggle` 與 `theme.js`。
-- 11 個工具頁面是否都包含 `home-link` 並指向 `index.html`。
+- 所有 HTML 是否引用 `theme.css`。
+- 所有 HTML 是否都包含 `themeToggle` 與 `theme.js`。
+- 所有工具頁面是否都包含 `home-link` 並指向 `index.html`。
 - 未設定主題時是否以淺色 token 為預設。
 - 具有 CSP 的頁面是否允許同目錄樣式檔。
 - Formatter、Catalog、SQL Compare 的動態報表是否包含共用主題色。
