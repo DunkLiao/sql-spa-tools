@@ -41,28 +41,61 @@ for (const file of ['theme.css', ...fs.readdirSync(root).filter(name => name.end
   }
 }
 
-function runTheme(saved) {
-  const store = new Map(saved == null ? [] : [['sql_spa_tools_theme', saved]]);
+function makeButton() {
   const listeners = {};
-  const button = {
+  return {
     textContent: '',
     title: '',
     attrs: {},
     setAttribute(name, value) { this.attrs[name] = value; },
     addEventListener(name, callback) { listeners[name] = callback; },
+    click() { listeners.click?.(); },
   };
+}
+
+function runTheme(saved, buttonInitiallyPresent = true) {
+  const store = new Map(saved == null ? [] : [['sql_spa_tools_theme', saved]]);
+  const documentListeners = {};
+  const windowListeners = {};
+  const emittedEvents = [];
+  let button = buttonInitiallyPresent ? makeButton() : null;
   const context = {
     document: {
       documentElement: { dataset: {} },
       getElementById() { return button; },
+      addEventListener(name, callback) { documentListeners[name] = callback; },
     },
+    window: {
+      addEventListener(name, callback) { windowListeners[name] = callback; },
+      dispatchEvent(event) { emittedEvents.push(event); },
+    },
+    CustomEvent: function CustomEvent(name, options) { this.type = name; Object.assign(this, options); },
     localStorage: {
       getItem(key) { return store.get(key) ?? null; },
       setItem(key, value) { store.set(key, value); },
     },
   };
   vm.runInNewContext(source, context);
-  return { context, button, click: () => listeners.click() };
+  return {
+    context,
+    store,
+    documentListeners,
+    windowListeners,
+    emittedEvents,
+    get button() { return button; },
+    addButton() { button = makeButton(); return button; },
+    click() {
+      if (typeof documentListeners.click === 'function') {
+        documentListeners.click({ target: { closest: selector => selector === '#themeToggle' ? button : null } });
+      } else {
+        button.click();
+      }
+    },
+    changeFromAnotherTab(theme) {
+      assert.equal(typeof windowListeners.storage, 'function', 'theme listens for cross-tab storage changes');
+      windowListeners.storage({ key: 'sql_spa_tools_theme', newValue: theme });
+    },
+  };
 }
 
 const first = runTheme(null);
@@ -77,4 +110,22 @@ restored.click();
 assert.equal(restored.context.document.documentElement.dataset.theme, 'light');
 assert.equal(restored.button.textContent, '🌙 深色模式');
 
-console.log('Theme behavior passed: default light, toggle, persistence');
+const lateButton = runTheme(null, false);
+lateButton.addButton();
+assert.equal(typeof lateButton.documentListeners?.click, 'function');
+lateButton.click();
+assert.equal(lateButton.context.document.documentElement.dataset.theme, 'dark');
+assert.equal(lateButton.store.get('sql_spa_tools_theme'), 'dark');
+
+const otherTab = runTheme('light');
+otherTab.changeFromAnotherTab('dark');
+assert.equal(otherTab.context.document.documentElement.dataset.theme, 'dark');
+assert.equal(otherTab.button.attrs['aria-pressed'], 'true');
+assert.ok(otherTab.emittedEvents.some(event => event.type === 'sql-spa-tools-theme-change' && event.detail.theme === 'dark'));
+
+const sqlLabSource = fs.readFileSync(require('node:path').join(root, 'sql-spa-tools-sql-lab.html'), 'utf8');
+assert.match(sqlLabSource, /addEventListener\('sql-spa-tools-theme-change'/);
+assert.match(sqlLabSource, /savePrefs\(\)\s*\{\s*this\.settings\.theme\s*=\s*window\.SQLSpaToolsTheme\.getTheme\(\)/);
+assert.match(sqlLabSource, /SQLSpaToolsTheme\.setTheme\(e\.target\.value\)/);
+
+console.log('Theme behavior passed: default light, toggle, persistence, late button, cross-tab sync');

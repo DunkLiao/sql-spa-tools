@@ -1716,8 +1716,7 @@ const App = {
     Router.go();
   },
   applyPrefs() {
-    const theme = localStorage.getItem('sql_spa_tools_theme');
-    if (theme === 'dark' || theme === 'light') this.settings.theme = theme;
+    this.settings.theme = window.SQLSpaToolsTheme.getTheme();
     document.documentElement.dataset.theme = this.settings.theme === 'dark' ? 'dark' : 'light';
     const toggle = document.getElementById('themeToggle');
     if (toggle) {
@@ -1728,7 +1727,7 @@ const App = {
     }
     document.documentElement.style.setProperty('--fs', this.settings.fontSize + 'px');
   },
-  savePrefs() { localStorage.setItem('sql_spa_tools_theme', this.settings.theme === 'dark' ? 'dark' : 'light'); this.applyPrefs(); return Store.setSetting('prefs', this.settings); },
+  savePrefs() { this.settings.theme = window.SQLSpaToolsTheme.getTheme(); this.applyPrefs(); return Store.setSetting('prefs', this.settings); },
   async createWorkspace(name, engine, sample) {
     const ws = { id: uid(), name, engine, data: null, created: Date.now(), updated: Date.now() };
     const e = engine === 'sqlite' ? new SqliteEngine() : new MiniEngine();
@@ -2338,7 +2337,7 @@ Views.settings = async (main) => {
       <div class="toolbar"><button class="btn pri" id="bkAll">下載完整備份</button><button class="btn" id="rsAll">從備份還原</button><span style="flex:1"></span><button class="btn danger" id="wipe">清除全部資料</button></div></div>
     <div class="card"><h3>快捷鍵</h3><table class="plain small"><tr><td><kbd>Ctrl</kbd>+<kbd>Enter</kbd> / <kbd>F5</kbd></td><td>執行（有選取時只執行選取範圍）</td></tr><tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>執行游標所在的敘述</td></tr><tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></td><td>格式化</td></tr><tr><td><kbd>Ctrl</kbd>+<kbd>/</kbd></td><td>切換註解</td></tr><tr><td><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>縮排／取消縮排</td></tr></table></div></div>`;
   $('#pTheme').value = App.settings.theme;
-  $('#pTheme').onchange = e => { App.settings.theme = e.target.value; App.savePrefs(); };
+  $('#pTheme').onchange = e => { window.SQLSpaToolsTheme.setTheme(e.target.value); App.savePrefs(); };
   $('#pFs').onchange = e => { App.settings.fontSize = Math.max(10, Math.min(24, +e.target.value || 14)); App.savePrefs(); };
   $('#pMax').onchange = e => { App.settings.maxRows = Math.max(100, +e.target.value || 1000); App.savePrefs(); };
   $('#pUp').onchange = e => { App.settings.upper = e.target.checked; App.savePrefs(); };
@@ -2479,7 +2478,9 @@ window.addEventListener('DOMContentLoaded', () => {
     <div class="body"><nav>${ROUTES.map(([r, i, l]) => `<a href="#/${r}" data-r="${r}"><span>${i}</span>${l}</a>`).join('')}</nav><main></main></div></div><a class="home-link" href="index.html">回首頁</a><button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">🌙 深色模式</button><div id="toasts"></div>`;
   $('#wsSel').onchange = e => App.openWorkspace(e.target.value);
   $('#hSave').onclick = async () => { App.dirty = true; await App.saveNow(); toast('已儲存'); };
-  $('#themeToggle').onclick = () => { App.settings.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; App.savePrefs(); };
+  window.addEventListener('sql-spa-tools-theme-change', event => {
+    if (event.detail?.theme === 'dark' || event.detail?.theme === 'light') App.settings.theme = event.detail.theme;
+  });
   document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); $('#hSave').click(); } });
   App.init().catch(e => { console.error(e); document.body.innerHTML = `<div class="empty"><h3>啟動失敗</h3>${h(e.message)}<br><br>若瀏覽器停用了 IndexedDB（例如私密瀏覽模式），請改用一般視窗開啟。</div>`; });
 });
