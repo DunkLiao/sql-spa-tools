@@ -16,7 +16,10 @@ SQL SPA Tools 是一組以瀏覽器執行的 Oracle SQL 工具集，包含格式
 - [SQLScriptManage](#sqlscriptmanage)
 - [Excel／CSV 轉 SQL](#excelcsv-轉-sql)
 - [Excel／CSV 轉 SQL CTE](#excelcsv-轉-sql-cte)
+- [SQL 欄位映射](#sql-欄位映射)
 - [SQL Lab](#sql-lab)
+- [資料品質稽核中心](#資料品質稽核中心)
+- [資料關聯探索器](#資料關聯探索器)
 - [資料安全與保存](#資料安全與保存)
 - [常見問題排除](#常見問題排除)
 - [維護者驗證](#維護者驗證)
@@ -30,6 +33,8 @@ SQL SPA Tools 是一組以瀏覽器執行的 Oracle SQL 工具集，包含格式
 4. 分析完成後，可在瀏覽器內檢視結果，或使用工具提供的匯出功能保存報表。
 
 不需要安裝 Node.js、資料庫或額外套件。若瀏覽器限制本機檔案權限，可使用任意靜態檔案伺服器預覽本資料夾；這只影響檔案存取權限，不會改變工具在瀏覽器本機處理資料的方式。
+
+## 整體使用流程
 
 ```mermaid
 flowchart TD
@@ -83,7 +88,10 @@ flowchart TD
 | SQLScriptManage | 在瀏覽器中管理 SQL 專案、腳本草稿與版本分支 | JSON 備份、SQL 檔案、版本歷程 |
 | Excel／CSV 轉 SQL | 將 CSV、TSV 或貼上的試算表資料轉成 SQL | DDL、批次 INSERT、`.sql` |
 | Excel／CSV 轉 SQL CTE | 將 CSV、TSV 或貼上的試算表資料轉成可查詢的 `WITH` CTE 虛擬資料表 | SQL 預覽、複製完整 SQL、`.sql` |
+| SQL 欄位映射 | 建立來源與目標資料表欄位映射，產生 DDL、查詢與程式碼 | SQL SELECT、Target DDL、Pandas、dbt、MyBatis XML、JSON 設定 |
 | SQL Lab | 在瀏覽器工作區匯入資料、編輯與執行 SQL，管理片段和測試案例 | 查詢結果、CSV、SQL Dump、JSON 備份 |
+| 資料品質稽核中心 | 匯入資料集並執行資料品質檢核與趨勢比較 | 品質分數、規則命中、HTML 報告、JSON 備份 |
+| 資料關聯探索器 | 探索資料表關聯、外鍵、欄位相依與代碼表 | ER 圖、Mermaid、DDL、Markdown、SVG／PNG、HTML 報告 |
 
 ## Oracle SQL Formatter
 
@@ -209,6 +217,17 @@ flowchart TD
   E --> F[複製或下載 SQL]
 ```
 
+## SQL 欄位映射
+
+SQL 欄位映射用於建立來源與目標資料表的欄位對應，並依設定產生查詢、DDL 與程式碼。所有處理都在瀏覽器本機完成。
+
+1. 在左側「來源結構」與右側「目標結構」按「輸入結構 → 貼上 DDL / JSON」貼上欄位定義，或按「＋ 新增來源欄位／新增目標欄位」手動建立；「載入範例」可先查看操作方式。
+2. 按「✳ 自動配對」依名稱配對欄位，再於「確認欄位配對」檢查結果；需要時按「＋ 新增映射」手動指定來源與目標欄位。
+3. 在「映射設定」為欄位選擇轉換樣板（TRIM、UPPER、LOWER、COALESCE、NVL、CAST、TO_CHAR、CASE WHEN、CONCAT），或改用 SQL 表達式並以 `{{src}}`、`{{src1}}`、`{{src2}}` 指定來源欄位；也可設定預設值與 CASE 比對／輸出值。
+4. 選擇目標 SQL 方言（PostgreSQL、MySQL、Oracle、SQL Server、SQLite），依需要開啟「引用識別字」、「關鍵字大寫」與「補齊稽核欄位」。
+5. 在「產生的程式碼」切換 SQL SELECT、Target DDL、Pandas、dbt Model 或 MyBatis XML，按「複製程式碼」或「下載程式碼」。
+6. 「匯出 JSON」可保存映射設定，「匯入設定」可還原；「⇄ 交換」會對調來源與目標，「清除全部」會清除目前設定。設定保存在目前瀏覽器的 `localStorage`，整理完成後建議先匯出 JSON。
+
 ## SQL Lab
 
 SQL Lab 在瀏覽器中提供 SQL 編輯器與資料工作區。首次開啟會建立含範例資料的「範例工作區」；內建引擎支援 SQLite 方言的一部分。工作區、編輯器內容、片段、測試案例與歷史會保存於目前瀏覽器的 IndexedDB。
@@ -242,6 +261,30 @@ flowchart LR
   D --> F[下載完整 JSON 備份]
 ```
 
+## 資料品質稽核中心
+
+資料品質稽核中心會匯入資料集、依範本執行檢核，並產生可保存的稽核結果與報告。資料集、剖析結果、範本、稽核紀錄與設定保存在目前瀏覽器的 IndexedDB，不會上傳到網路。
+
+1. 將 CSV／TSV／TXT／XLSX／XLSM 拖入匯入區或點擊選擇檔案。CSV 會自動偵測編碼（UTF-8、BOM、UTF-16、Big5）與分隔符號；Excel 可選擇工作表。確認「第一列為標題」後匯入。
+2. 在「資料集」選擇資料集，查看前 100 筆預覽與「欄位總覽」；可按「💡 依剖析建議規則」依目前資料產生候選規則。
+3. 在「稽核範本」使用「內建檢核」，或新增、編輯「自訂規則」並維護「例外清單」。範本可新增、改名、複製、匯出／匯入 JSON。
+4. 按「▶ 執行稽核」，查看「各規則命中」、「規則彙總」與「問題明細」；點選問題可檢視該列原始資料與同一列的所有問題。
+5. 稽核結果包含品質分數、維度分數與「品質分數趨勢」，也可比較兩個批次。
+6. 需要保存或分享時，使用「匯出 HTML 報告」、「匯出問題明細 CSV」、「匯出問題列原始資料」或「匯出清理後資料」。
+7. 「設定」可調整判定標準、啟用「僅檢查營業日」與載入假日檔；「完整備份 / 還原」可匯出或匯入包含資料集與設定的 JSON。
+
+## 資料關聯探索器
+
+資料關聯探索器會分析匯入的資料檔，推測資料表關聯、外鍵、欄位相依與代碼表，並以 ER 圖與報告呈現。分析結果與工作區保存在目前瀏覽器的 IndexedDB。
+
+1. 在左側按「📥 匯入」載入 `.csv`、`.tsv`、`.txt` 資料檔，可設定編碼、分隔符號與「第一列為標題」；也可用「載入範例資料（放款系統）」快速試用。
+2. 按「⚙️ 分析」開始剖析；「設定」可調整信心門檻、外鍵包含率、複合鍵欄數、抽樣筆數與民國日期辨識等參數。
+3. 在「資料表」檢視欄位、主鍵、列數與關聯；「關聯明細」會列出信心分數組成、孤兒值與複合鍵對應。可將關聯標記為已確認、待審核或已否決。
+4. 使用「跨表路徑查詢」與「影響分析」追查上下游；「欄位相依與正規化」可檢查相依關係與建議。
+5. 「代碼表」、「表內代碼對照」、「列舉欄位」與「日期欄位」可協助解讀欄位內容。
+6. 從「📤 匯出」下載 Mermaid erDiagram、SQL DDL（Oracle／SQL Server／SQLite）、Excel 分析報告（`.xls`）、Markdown 關聯說明、ER 圖 SVG／PNG、孤兒值／代碼表／影響清單 CSV，或按「📑 一鍵產生分析報告（HTML）」輸出完整報告。
+7. 「匯出工作區 JSON」可備份目前工作區，「匯入工作區 JSON」可還原。關聯為依資料內容推測，匯出 DDL 或報告前請搭配系統規格確認。
+
 ## 資料安全與保存
 
 - 工具是純前端頁面；SQL 內容與分析主要在目前瀏覽器分頁中處理，不會由本專案主動上傳到伺服器。
@@ -250,6 +293,7 @@ flowchart LR
 - Catalog 的主要持久資料是選取根目錄中的 `sql_catalog.json`；瀏覽器快取只適合作為暫存備援，不應取代正式備份。
 - SQL Lab 的工作區、片段、測試案例、執行歷史與設定保存在目前瀏覽器的 IndexedDB。清除瀏覽器網站資料或改用另一個瀏覽器／使用者設定檔時，這些資料不會自動移轉；請定期下載完整 JSON 備份。
 - SQL Lab 的完整備份包含工作區、片段、測試案例、歷史與設定，但不包含 SQLite 引擎檔。還原採合併方式，相同 ID 的資料會被備份內容覆蓋。
+- 資料品質稽核中心與資料關聯探索器的資料集、分析結果與設定同樣保存在目前瀏覽器的 IndexedDB；清除網站資料或更換瀏覽器前，請先使用各自的備份功能匯出 JSON。
 - 主題與部分工具設定會存於瀏覽器的 `localStorage`，不等同於 SQL 檔案備份，也不會跨瀏覽器同步。
 - 下載的 ZIP、CSV、HTML、JSON、SVG、PNG 與 Mermaid 檔案會交由瀏覽器的下載位置管理。
 
@@ -307,6 +351,10 @@ node '.\tests\test-theme.js'
 node '.\tests\test-excel-csv-sql.js'
 node '.\tests\test-excel-csv-sql-cte.js'
 node '.\tests\test-sqlscriptmanage.js'
+node '.\tests\test-schema-studio.js'
+node '.\tests\test-data-quality-audit-center.js'
+node '.\tests\test-pii-cleaner.js'
+node '.\tests\test-sql-lab.js'
 & '.\tests\validate-theme.ps1'
 & '.\tests\validate-index.ps1'
 & '.\tests\validate-home-links.ps1'
@@ -339,7 +387,7 @@ Windows PowerShell 讀取本文件時，請明確指定 UTF-8：
 
 | 工作項目 | 執行環境 | 內容 |
 | --- | --- | --- |
-| Node 22 JavaScript 測試 | `ubuntu-latest` | `test-theme.js`、`test-excel-csv-sql.js`、`test-excel-csv-sql-cte.js`、`test-sqlscriptmanage.js`，以及 `node --check theme.js` |
+| Node 22 JavaScript 測試 | `ubuntu-latest` | `test-theme.js`、`test-excel-csv-sql.js`、`test-excel-csv-sql-cte.js`、`test-sqlscriptmanage.js`、`test-schema-studio.js`、`test-data-quality-audit-center.js`、`test-pii-cleaner.js`、`test-sql-lab.js`，以及 `node --check theme.js` |
 | Windows PowerShell 驗證 | `windows-latest` | `validate-theme.ps1`、`validate-index.ps1`、`validate-home-links.ps1` |
 
 兩個工作會平行執行；每支測試各自一個步驟，失敗時可直接看出是哪一項。workflow 僅要求 `permissions: contents: read`，不會寫入倉儲，也不需要安裝任何 npm 套件。

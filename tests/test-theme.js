@@ -21,6 +21,7 @@ for (const [, color] of stylesheet.matchAll(/--theme-[\w-]+:\s*(#[0-9a-f]{6})/gi
 }
 assert.match(stylesheet, /:root\[data-theme='dark'\]\s*\{[^}]*--theme-page:\s*#202020/s);
 assert.match(stylesheet, /:root\[data-theme='dark'\]\s*\{[^}]*--theme-primary:\s*#5a5a5a/s);
+assert.match(stylesheet, /:root\[data-theme='dark'\]\s*\{[^}]*--m-id:\s*#3d3d3d/s, 'dark mode must remap --m-* highlight surfaces');
 for (const [selector, token] of [
   ['.l-使用中', '--theme-success-soft'], ['.l-草稿', '--theme-warning-soft'],
   ['.t-待處理', '--theme-warning-soft'], ['.modal .mh', '--theme-surface-alt'],
@@ -39,6 +40,11 @@ for (const file of ['theme.css', ...fs.readdirSync(root).filter(name => name.end
       : [color.slice(0, 2), color.slice(2, 4), color.slice(4, 6)];
     assert.equal(new Set(channels).size, 1, `${file} contains non-gray color #${color}`);
   }
+  if (file.endsWith('.html')) {
+    const head = content.slice(0, content.indexOf('</head>'));
+    assert.ok(head.includes('<script src="theme.js"></script>'), `${file} must load theme.js in <head> so the saved theme applies before first paint`);
+    assert.doesNotMatch(content, /id="themeToggle"[^>]*aria-pressed/, `${file} must not mark the theme toggle as pressed while its label describes the action`);
+  }
 }
 
 function makeButton() {
@@ -53,7 +59,7 @@ function makeButton() {
   };
 }
 
-function runTheme(saved, buttonInitiallyPresent = true) {
+function runTheme(saved, buttonInitiallyPresent = true, brokenStorage = false) {
   const store = new Map(saved == null ? [] : [['sql_spa_tools_theme', saved]]);
   const documentListeners = {};
   const windowListeners = {};
@@ -70,7 +76,10 @@ function runTheme(saved, buttonInitiallyPresent = true) {
       dispatchEvent(event) { emittedEvents.push(event); },
     },
     CustomEvent: function CustomEvent(name, options) { this.type = name; Object.assign(this, options); },
-    localStorage: {
+    localStorage: brokenStorage ? {
+      getItem() { throw new Error('SecurityError: storage blocked'); },
+      setItem() { throw new Error('SecurityError: storage blocked'); },
+    } : {
       getItem(key) { return store.get(key) ?? null; },
       setItem(key, value) { store.set(key, value); },
     },
@@ -113,6 +122,9 @@ assert.equal(restored.button.textContent, '🌙 深色模式');
 const lateButton = runTheme(null, false);
 lateButton.addButton();
 assert.equal(typeof lateButton.documentListeners?.click, 'function');
+assert.equal(typeof lateButton.documentListeners?.DOMContentLoaded, 'function', 'theme renders buttons created before DOMContentLoaded');
+lateButton.documentListeners.DOMContentLoaded();
+assert.equal(lateButton.button.textContent, '🌙 深色模式');
 lateButton.click();
 assert.equal(lateButton.context.document.documentElement.dataset.theme, 'dark');
 assert.equal(lateButton.store.get('sql_spa_tools_theme'), 'dark');
@@ -120,12 +132,20 @@ assert.equal(lateButton.store.get('sql_spa_tools_theme'), 'dark');
 const otherTab = runTheme('light');
 otherTab.changeFromAnotherTab('dark');
 assert.equal(otherTab.context.document.documentElement.dataset.theme, 'dark');
-assert.equal(otherTab.button.attrs['aria-pressed'], 'true');
+assert.equal(otherTab.button.attrs['aria-pressed'], undefined, 'aria-pressed must not contradict the action label');
 assert.ok(otherTab.emittedEvents.some(event => event.type === 'sql-spa-tools-theme-change' && event.detail.theme === 'dark'));
+
+// 私密瀏覽／封鎖網站資料時 localStorage 會丟錯，主題仍必須可切換
+const blocked = runTheme('dark', true, true);
+assert.equal(blocked.context.document.documentElement.dataset.theme, 'light');
+blocked.click();
+assert.equal(blocked.context.document.documentElement.dataset.theme, 'dark');
+assert.equal(blocked.button.textContent, '☀️ 淺色模式');
+assert.doesNotMatch(source, /setAttribute\('aria-pressed'/);
 
 const sqlLabSource = fs.readFileSync(require('node:path').join(root, 'sql-spa-tools-sql-lab.html'), 'utf8');
 assert.match(sqlLabSource, /addEventListener\('sql-spa-tools-theme-change'/);
 assert.match(sqlLabSource, /savePrefs\(\)\s*\{\s*this\.settings\.theme\s*=\s*window\.SQLSpaToolsTheme\.getTheme\(\)/);
 assert.match(sqlLabSource, /SQLSpaToolsTheme\.setTheme\(e\.target\.value\)/);
 
-console.log('Theme behavior passed: default light, toggle, persistence, late button, cross-tab sync');
+console.log('Theme behavior passed: default light, toggle, persistence, late button, cross-tab sync, blocked storage');

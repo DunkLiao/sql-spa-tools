@@ -27,7 +27,7 @@ foreach ($token in $requiredTokens) {
 
 foreach ($file in $htmlFiles) {
   $content = Get-Content -Raw -Encoding UTF8 $file.FullName
-  if ($content -match '\u83AB\u862D\u8FEA|\u96E2\u7DDA|offline|\u4E0D\u9023\u7DB2|\u7121\u7DB2\u8DEF|\u672A\u9023\u7DDA') {
+  if ($content -match '\u83AB\u862D\u8FEA|\u96E2\u7DDA\u6A21\u5F0F|\u96E2\u7DDA\u7248|offline mode') {
     throw "$($file.Name) still contains removed theme or offline copy"
   }
   if ($content -notmatch '<link[^>]+href=["'']theme\.css["'']') {
@@ -38,6 +38,14 @@ foreach ($file in $htmlFiles) {
   }
   if ($content -notmatch '<script[^>]+src=["'']theme\.js["'']') {
     throw "$($file.Name) does not reference theme.js"
+  }
+  $headEnd = $content.IndexOf('</head>')
+  if ($headEnd -lt 0) {
+    throw "$($file.Name) is missing </head>"
+  }
+  $head = $content.Substring(0, $headEnd)
+  if ($head -notmatch '<script[^>]+src=["'']theme\.js["'']') {
+    throw "$($file.Name) must load theme.js in <head> so the saved theme applies before first paint"
   }
 }
 
@@ -73,8 +81,12 @@ if ($theme -notmatch ':root\[data-theme=''dark''\]' -or $theme -notmatch '--them
   throw 'Light theme is not the default'
 }
 
+if ($theme -notmatch '--m-id:\s*#3d3d3d' -or $theme -notmatch '--m-ban:\s*#565656') {
+  throw 'Dark-mode highlight tokens are missing'
+}
+
 $themeScript = Get-Content -Raw -Encoding UTF8 $themeScriptPath
-if ($themeScript -notmatch 'sql_spa_tools_theme' -or $themeScript -notmatch "saved === 'dark'") {
+if ($themeScript -notmatch 'sql_spa_tools_theme' -or $themeScript -notmatch "=== 'dark'") {
   throw 'Theme persistence contract missing'
 }
 

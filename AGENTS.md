@@ -103,6 +103,10 @@ node '.\tests\test-theme.js'
 node '.\tests\test-excel-csv-sql.js'
 node '.\tests\test-excel-csv-sql-cte.js'
 node '.\tests\test-sqlscriptmanage.js'
+node '.\tests\test-schema-studio.js'
+node '.\tests\test-data-quality-audit-center.js'
+node '.\tests\test-pii-cleaner.js'
+node '.\tests\test-sql-lab.js'
 node --check '.\theme.js'
 ```
 

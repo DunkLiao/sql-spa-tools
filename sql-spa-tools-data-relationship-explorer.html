@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SQL SPA Tools｜資料關聯探索器</title>
 <link rel="stylesheet" href="theme.css">
+<script src="theme.js"></script>
 <style>
 *{box-sizing:border-box}
 
@@ -152,7 +153,7 @@ h4{margin:12px 0 6px;font-size:13px}
   <button data-act="theme" id="btnTheme" title="切換主題">☾</button>
 </header>
 <a class="home-link" href="index.html">⌂ 工具入口</a>
-<button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">切換主題</button>
+<button id="themeToggle" class="theme-toggle" type="button">切換主題</button>
 <div class="layout" id="layout">
   <aside class="sidebar">
     <div class="side-head"><span>資料表 <span id="tblCount" class="muted"></span></span><span class="muted small" title="勾選＝在 ER 圖顯示">ER</span></div>
@@ -897,6 +898,8 @@ function statusTag(r) {
 }
 function scoreColor(s) { return s >= 85 ? 'var(--theme-success)' : s >= 70 ? 'var(--theme-primary)' : s >= 50 ? 'var(--theme-warning)' : 'var(--theme-danger)'; }
 const codeTableSet = () => new Set(((S.ws.analysis || {}).codeTables || []).map(c => c.tableId));
+function readLastWs() { try { return localStorage.getItem('dre_lastWs'); } catch (_) { return null; } }
+function writeLastWs(id) { try { localStorage.setItem('dre_lastWs', id); } catch (_) { /* 瀏覽器封鎖儲存時僅失去記憶上次工作區 */ } }
 
 /* ===== 初始化 ===== */
 function newWs(name) { return { id: uid(), name, createdAt: Date.now(), updatedAt: Date.now(), settings: { ...DEFAULT_SETTINGS }, analysis: null }; }
@@ -904,14 +907,14 @@ async function init() {
   try { S.db = await openDB(); } catch (e) { document.body.innerHTML = '<div class="empty">無法開啟 IndexedDB：' + esc(e.message) + '<br>請確認瀏覽器未停用本機儲存。</div>'; return; }
   S.wsList = await dbAll('workspaces');
   if (!S.wsList.length) { const ws = newWs('預設工作區'); await dbPut('workspaces', ws); S.wsList = [ws]; }
-  const last = localStorage.getItem('dre_lastWs');
+  const last = readLastWs();
   bind();
   await loadWs((S.wsList.find(w => w.id === last) || S.wsList[0]).id);
 }
 async function loadWs(id) {
   S.ws = await dbGet('workspaces', id);
   S.ws.settings = { ...DEFAULT_SETTINGS, ...(S.ws.settings || {}) };
-  localStorage.setItem('dre_lastWs', id);
+  writeLastWs(id);
   S.rowCache.clear();
   S.highlight = null;
   S.tables = (await dbByIndex('tables', 'wsId', id)).sort((a, b) => a.name.localeCompare(b.name, 'zh-Hant'));
@@ -1002,6 +1005,7 @@ const CHG = {};
 CHG.ws = async el => { await loadWs(el.value); };
 
 A['toggle-export'] = () => $('#exportMenu').classList.toggle('open');
+A['theme'] = () => document.getElementById('themeToggle').click();
 document.getElementById('themeToggle').addEventListener('click', () => setTimeout(() => { if (S.tab === 'er' && S.ws) drawER(); }, 0));
 A['close-detail'] = () => $('#layout').classList.add('nodetail');
 function openDetail(html) { $('#detailBody').innerHTML = html; $('#layout').classList.remove('nodetail'); $('#detail').scrollTop = 0; }
@@ -1262,9 +1266,10 @@ A['imp-confirm'] = async () => {
 function setProg(p, msg) { $('#pbarFill').style.width = p + '%'; $('#pmsg').textContent = msg; }
 function endBusy() { S.busy = false; $('#btnCancel').hidden = true; $('#btnAnalyze').disabled = false; if (S.worker && S.worker.terminate) S.worker.terminate(); S.worker = null; }
 function makeInlineWorker(handler) {
-  const selfObj = { postMessage: m => setTimeout(() => handler({ data: m }), 0), onmessage: null };
+  let dead = false;
+  const selfObj = { postMessage: m => setTimeout(() => { if (!dead) handler({ data: m }); }, 0), onmessage: null };
   new Function('self', $('#workerSrc').textContent)(selfObj);
-  return { postMessage: m => setTimeout(() => selfObj.onmessage({ data: m }), 30), terminate() { } };
+  return { postMessage: m => { if (!dead) setTimeout(() => selfObj.onmessage({ data: m }), 30); }, terminate() { dead = true; } };
 }
 A.analyze = async () => {
   if (S.busy) return;
@@ -2472,6 +2477,5 @@ function genSampleData() {
 }
 init();
 </script>
-<script src="theme.js"></script>
 </body>
 </html>

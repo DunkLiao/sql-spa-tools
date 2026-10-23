@@ -2,6 +2,7 @@
 <html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SQL SPA Tools｜SQL Lab</title>
 <link rel="stylesheet" href="theme.css">
+<script src="theme.js"></script>
 <style>
 :root{--fs:14px}
 *{box-sizing:border-box}
@@ -1248,7 +1249,7 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 
 const fmtTime = (t) => { const d = new Date(t); const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}/${p(d.getMonth() + 1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; };
 const fmtMs = (ms) => ms < 1 ? '<1 ms' : ms < 1000 ? ms.toFixed(1) + ' ms' : (ms / 1000).toFixed(2) + ' s';
 const fmtSize = (n) => n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(2) + ' MB';
-const debounce = (f, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => f(...a), ms); }; };
+const debounce = (f, ms) => { let t; const run = (...a) => { clearTimeout(t); t = setTimeout(() => f(...a), ms); }; run.cancel = () => clearTimeout(t); return run; };
 
 /* ---------- IndexedDB ---------- */
 const Store = (() => {
@@ -1723,7 +1724,6 @@ const App = {
       const isDark = document.documentElement.dataset.theme === 'dark';
       toggle.textContent = isDark ? '☀️ 淺色模式' : '🌙 深色模式';
       toggle.title = isDark ? '切換至淺色模式' : '切換至深色模式';
-      toggle.setAttribute('aria-pressed', String(isDark));
     }
     document.documentElement.style.setProperty('--fs', this.settings.fontSize + 'px');
   },
@@ -1739,9 +1739,14 @@ const App = {
   },
   async openWorkspace(id, silent) {
     if (this.dirty) await this.saveNow();
+    // 先把目前工作區的編輯內容寫回去，再切換；否則 debounce 會用新的 ws id 寫入舊內容。
+    if (this.ws && this.ws.id !== id) {
+      this.saveEditor.cancel();
+      if (this.editorText != null) await Store.setSetting('editor:' + this.ws.id, this.editorText);
+    }
     const ws = await Store.get('workspaces', id);
     const eng = makeEngine(ws);
-    if (!eng) { toast('這個工作區需要 SQLite 引擎，請先到「設定」載入 sql.js', true); if (!this.engine) { this.ws = ws; this.engine = new MiniEngine(); } return; }
+    if (!eng) { toast('這個工作區需要 SQLite 引擎，請先到「設定」載入 sql.js', true); if (!this.engine) { this.ws = ws; this.engine = new MiniEngine(); } renderHeader(); return; }
     this.ws = ws; this.engine = eng; this.dirty = false; this.lastRun = null;
     this.editorText = await Store.getSetting('editor:' + id, '');
     await Store.setSetting('lastWs', id);
@@ -1756,7 +1761,7 @@ const App = {
     this.ws.updated = Date.now(); this.dirty = false;
     await Store.put('workspaces', this.ws); renderHeader();
   },
-  saveEditor: debounce((t) => Store.setSetting('editor:' + App.ws.id, t), 600),
+  saveEditor: debounce((text, wsId) => Store.setSetting('editor:' + (wsId || App.ws.id), text), 600),
   async run(sql, source = 'editor') {
     if (!sql.trim()) { toast('沒有可執行的 SQL'); return null; }
     const t0 = performance.now();
@@ -1831,7 +1836,7 @@ Views.editor = (main) => {
     </section></div>`;
   const ed = CodeEditor($('#edWrap'), {
     value: App.editorText,
-    onChange: (v) => { App.editorText = v; App.saveEditor(v); },
+    onChange: (v) => { App.editorText = v; App.saveEditor(v, App.ws.id); },
     onRun: () => runMain(), onRunCurrent: () => runCurrent(), onFormat: () => doFormat(),
   });
   const runMain = async () => { const sql = ed.selection().trim() ? ed.selection() : ed.get(); const r = await App.run(sql); if (r) { App.lastRun = r; showResults(r); renderTree(); } };
@@ -1977,7 +1982,7 @@ Views.schema = (main) => {
       ${t.indexes.length ? `<div class="small muted" style="margin-top:6px">索引：${t.indexes.map(h).join('、')}</div>` : ''}</div>`).join('')
     + s.views.map(v => `<div class="card"><h3>◫ 檢視 ${h(v.name)}</h3><pre style="font-family:var(--theme-font-mono);font-size:12px;white-space:pre-wrap;margin:0">${h(v.sql)}</pre></div>`).join('')
     || '<div class="empty">尚無資料表，可到「匯入」載入 CSV，或在編輯器執行 CREATE TABLE。</div>';
-  const toEditor = (sql) => { App.editorText = (App.editorText.trimEnd() + '\n\n' + sql + '\n').trimStart(); App.saveEditor(App.editorText); Router.nav('editor'); };
+  const toEditor = (sql) => { App.editorText = (App.editorText.trimEnd() + '\n\n' + sql + '\n').trimStart(); App.saveEditor(App.editorText, App.ws.id); Router.nav('editor'); };
   $$('[data-p]').forEach(b => b.onclick = () => {
     const r = App.engine.exec(`SELECT * FROM ${qid(b.dataset.p)} LIMIT 100`); const x = r.results[0];
     $('#sPrev').innerHTML = x ? `<div class="card"><h3>預覽：${h(b.dataset.p)}（前 100 筆）</h3><div class="box">${renderTable(x.columns, x.values)}</div></div>` : `<div class="msg err">${h(r.error)}</div>`;
@@ -2010,7 +2015,7 @@ Views.import = (main) => {
         <pre style="font-family:var(--theme-font-mono);font-size:12px;max-height:240px;overflow:auto;background:var(--theme-surface-alt);padding:10px;border-radius:6px">${h(text.slice(0, 5000))}${text.length > 5000 ? '\n…' : ''}</pre>
         <div class="toolbar"><button class="btn pri" id="runSql">在目前工作區執行</button><button class="btn" id="toEd">載入到編輯器</button></div><div id="sqlOut"></div></div>`;
       $('#runSql').onclick = async () => { const r = await App.run(text, 'import'); $('#sqlOut').innerHTML = r.error ? `<div class="msg err">執行到第 ${r.results.length + 1} 個敘述時發生錯誤：${h(r.error)}</div>` : `<div class="msg ok">完成，共執行 ${r.results.length} 個敘述（${fmtMs(r.ms)}）</div>`; };
-      $('#toEd').onclick = () => { App.editorText = text; App.saveEditor(text); Router.nav('editor'); };
+      $('#toEd').onclick = () => { App.editorText = text; App.saveEditor(text, App.ws.id); Router.nav('editor'); };
       return;
     }
     let enc = 'auto', delim = '', header = true, info;
@@ -2107,7 +2112,7 @@ Views.snippets = async (main) => {
       <button class="btn sm pri" data-use="${s.id}">帶入編輯器</button><button class="btn sm" data-run="${s.id}">執行</button><button class="btn sm" data-edit="${s.id}">編輯</button><button class="btn sm danger" data-del="${s.id}">刪除</button></div>
       ${s.desc ? `<div class="small muted">${h(s.desc)}</div>` : ''}<pre>${h(s.sql)}</pre></div>`).join('') || '<div class="empty">沒有片段。在編輯器按「存為片段」，或點「新增片段」。</div>';
     const find = id => all.find(s => s.id === id);
-    $$('[data-use]').forEach(b => b.onclick = () => { App.editorText = (App.editorText.trimEnd() + '\n\n' + find(b.dataset.use).sql).trimStart(); App.saveEditor(App.editorText); Router.nav('editor'); });
+    $$('[data-use]').forEach(b => b.onclick = () => { App.editorText = (App.editorText.trimEnd() + '\n\n' + find(b.dataset.use).sql).trimStart(); App.saveEditor(App.editorText, App.ws.id); Router.nav('editor'); });
     $$('[data-run]').forEach(b => b.onclick = async () => { const r = await App.run(find(b.dataset.run).sql, 'snippet'); App.lastRun = r; Router.nav('editor'); });
     $$('[data-edit]').forEach(b => b.onclick = () => editSnippet(find(b.dataset.edit)));
     $$('[data-del]').forEach(b => b.onclick = async () => { if (!confirm('刪除此片段？')) return; await Store.del('snippets', b.dataset.del); Router.go(); });
@@ -2134,7 +2139,7 @@ Views.history = async (main) => {
       <button class="btn sm" data-load="${x.id}">載入</button><button class="btn sm" data-re="${x.id}">重新執行</button><button class="btn sm" data-snip="${x.id}">存為片段</button></div>
       ${x.error ? `<div class="small" style="color:var(--theme-danger);margin-top:4px">${h(x.error)}</div>` : ''}<pre>${h(x.sql.slice(0, 1500))}</pre></div>`).join('') || '<div class="empty">沒有紀錄</div>';
     const find = id => all.find(x => x.id === id);
-    $$('[data-load]').forEach(b => b.onclick = () => { App.editorText = find(b.dataset.load).sql; App.saveEditor(App.editorText); Router.nav('editor'); });
+    $$('[data-load]').forEach(b => b.onclick = () => { App.editorText = find(b.dataset.load).sql; App.saveEditor(App.editorText, App.ws.id); Router.nav('editor'); });
     $$('[data-re]').forEach(b => b.onclick = async () => { const r = await App.run(find(b.dataset.re).sql, 'history'); App.lastRun = r; Router.nav('editor'); });
     $$('[data-snip]').forEach(b => b.onclick = () => editSnippet({ sql: find(b.dataset.snip).sql }));
   };
@@ -2475,7 +2480,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.body.innerHTML = `<div id="app"><header><div class="logo"><i>SQL</i><h1>SQL SPA Tools｜SQL Lab</h1><span class="small muted" style="font-weight:400">SQL 測試工具</span></div>
     <select id="wsSel" title="切換工作區" style="max-width:220px"></select><span id="engBadge" class="badge"></span><span id="saveBadge" class="badge"></span>
     <span class="sp"></span><button class="btn sm" id="hSave" title="立即儲存">儲存</button></header>
-    <div class="body"><nav>${ROUTES.map(([r, i, l]) => `<a href="#/${r}" data-r="${r}"><span>${i}</span>${l}</a>`).join('')}</nav><main></main></div></div><a class="home-link" href="index.html">回首頁</a><button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">🌙 深色模式</button><div id="toasts"></div>`;
+    <div class="body"><nav>${ROUTES.map(([r, i, l]) => `<a href="#/${r}" data-r="${r}"><span>${i}</span>${l}</a>`).join('')}</nav><main></main></div></div><a class="home-link" href="index.html">回首頁</a><button id="themeToggle" class="theme-toggle" type="button">🌙 深色模式</button><div id="toasts"></div>`;
   $('#wsSel').onchange = e => App.openWorkspace(e.target.value);
   $('#hSave').onclick = async () => { App.dirty = true; await App.saveNow(); toast('已儲存'); };
   window.addEventListener('sql-spa-tools-theme-change', event => {
@@ -2487,5 +2492,4 @@ window.addEventListener('DOMContentLoaded', () => {
 window.SQLLab = { App, formatSQL, MiniSQL };
 })();
 </script>
-<script src="theme.js"></script>
 </body></html>

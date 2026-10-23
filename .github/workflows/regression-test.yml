@@ -34,6 +34,18 @@ jobs:
       - name: test-sqlscriptmanage.js
         run: node ./tests/test-sqlscriptmanage.js
 
+      - name: test-schema-studio.js
+        run: node ./tests/test-schema-studio.js
+
+      - name: test-data-quality-audit-center.js
+        run: node ./tests/test-data-quality-audit-center.js
+
+      - name: test-pii-cleaner.js
+        run: node ./tests/test-pii-cleaner.js
+
+      - name: test-sql-lab.js
+        run: node ./tests/test-sql-lab.js
+
       - name: theme.js 語法檢查
         run: node --check ./theme.js
 

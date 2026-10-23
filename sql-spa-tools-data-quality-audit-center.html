@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SQL SPA Tools｜資料品質稽核中心</title>
 <link rel="stylesheet" href="theme.css">
+<script src="theme.js"></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-size:14px;background:var(--theme-page);color:var(--theme-text)}
@@ -34,7 +35,7 @@ th{background:var(--theme-surface-alt);position:sticky;top:0}
 .kpi{flex:1;min-width:120px;background:var(--theme-surface);border:1px solid var(--theme-border);border-radius:6px;padding:10px;text-align:center}
 .kpi b{display:block;font-size:24px;color:var(--theme-primary)}
 .drop{border:2px dashed var(--theme-primary);border-radius:8px;padding:30px;text-align:center;background:var(--theme-surface-alt);cursor:pointer}
-.sev-?{color:var(--theme-danger);font-weight:bold}.sev-?{color:var(--theme-warning);font-weight:bold}.sev-?{color:var(--theme-muted)}
+.sev-高{color:var(--theme-danger);font-weight:bold}.sev-中{color:var(--theme-warning);font-weight:bold}.sev-低{color:var(--theme-muted)}
 .grade{display:inline-block;width:46px;height:46px;line-height:46px;border-radius:50%;color:var(--theme-surface);font-size:24px;font-weight:bold;text-align:center}
 .gA,.gB{background:var(--theme-success)}.gC{background:var(--theme-info)}.gD{background:var(--theme-warning)}.gE{background:var(--theme-danger)}
 .muted{color:var(--theme-muted);font-size:12px}
@@ -69,7 +70,7 @@ button.mini{padding:2px 6px;font-size:12px}
 </div>
 <div id="toast"></div>
 <a class="home-link" href="index.html">⌂ 工具入口</a>
-<button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">切換主題</button>
+<button id="themeToggle" class="theme-toggle" type="button">切換主題</button>
 <script id="core">
 /* ===== 共用核心（主執行緒與 Worker 共用） ===== */
 const CFG={nullTokens:['NULL','N/A','NA','null','-','無'],outMethod:'z',outThr:3,iqrK:1.5,pageSize:200,defMinScore:'',defBuiltinThr:{}};
@@ -687,7 +688,7 @@ V.results=async()=>{const runs=(await dall('runs')).sort((a,b)=>b.time-a.time);i
 <div class="kpis"><div class="kpi"><span class="grade g${R.grade}">${R.grade}</span><br>${R.score.toFixed(2)} 分<br>${passBadge(R.pass)}</div>
 ${DIMS.map(d=>`<div class="kpi"><b>${R.dims[d]==null?'—':R.dims[d].toFixed(1)}</b>${d}</div>`).join('')}
 <div class="kpi"><b>${R.issueRows.toLocaleString()}</b>問題列數 / ${R.n.toLocaleString()}</div><div class="kpi"><b>${R.issueCount.toLocaleString()}</b>問題明細${R.truncated?'<br><span class="sev-高">已達上限 20 萬</span>':''}<br><span class="muted">例外排除 ${(R.excTotal||0).toLocaleString()}</span></div></div>
-${R.reasons&&R.reasons.length?`<div class="card" style="border-left:4px solid var(--hi);margin-top:12px"><b>不通過原因</b><ul style="margin:6px 0">${R.reasons.map(x=>`<li>${h(x)}</li>`).join('')}</ul></div>`:''}<br>
+${R.reasons&&R.reasons.length?`<div class="card" style="border-left:4px solid var(--theme-danger);margin-top:12px"><b>不通過原因</b><ul style="margin:6px 0">${R.reasons.map(x=>`<li>${h(x)}</li>`).join('')}</ul></div>`:''}<br>
 <div class="grid2"><div class="card"><h3>各規則命中</h3>${bars(R.rules.filter(r=>r.hits).sort((a,b)=>b.hits-a.hits).slice(0,15).map(r=>[r.name,r.hits]),{color:themeColor('--theme-danger'),lw:170})}</div>
 <div class="card"><h3>規則彙總</h3><div class="tw" style="max-height:320px"><table><tr><th>規則</th><th>維度</th><th>嚴重度</th><th>命中</th><th>比率</th><th>門檻</th><th>判定</th><th>例外</th></tr>
 ${R.rules.map(r=>`<tr><td title="${h(r.desc)}"><a href="#" data-fr="${r.id}">${h(r.name)}</a></td><td>${r.dim}</td><td class="sev-${r.sev}">${r.sev}</td><td>${r.hits.toLocaleString()}</td><td>${pct(r.rate)}</td><td>${r.thr==null?'—':r.thr+'%'}</td><td>${r.pass==null?'—':passBadge(r.pass)}</td><td>${r.exc||0}</td></tr>`).join('')}</table></div></div></div>
@@ -799,12 +800,15 @@ Z 門檻 <input id="sZ" type="number" step="0.1" value="${CFG.outThr}" style="wi
   for(const s of STORES){await dclear(s);for(const x of o[s]||[])await dput(s,x)}await loadCfg();S.ds=null;S.run=null;S.tpl='__builtin';await refreshHeader();toast('備份已還原');go('datasets')}catch(er){alert('還原失敗：'+er.message)}};
  $('#bClr').onclick=async()=>{if(!confirm('確定清除所有資料？此動作無法復原。'))return;for(const s of STORES)await dclear(s);S.ds=null;S.run=null;S.tpl='__builtin';await refreshHeader();go('import')}};
 
+window.addEventListener('sql-spa-tools-theme-change', () => {
+  if (['profile', 'results', 'compare'].includes(S.view)) V[S.view]();
+});
+
 /* ================= 啟動 ================= */
 (async()=>{try{await openDB();await loadCfg();WORKER_OK=await testWorker();$('#hdMode').textContent=WORKER_OK?'⚙ 背景模式':'⚙ 相容模式';$('#hdMode').title=WORKER_OK?'使用 Web Worker 背景處理':'瀏覽器不允許本機 Worker，改於主執行緒處理';
  await refreshHeader();renderNav();V.import()}catch(e){document.body.innerHTML='<p style="padding:20px">無法開啟 IndexedDB：'+h(e.message)+'</p>'}})();
 
 function themeColor(token){return getComputedStyle(document.documentElement).getPropertyValue(token).trim()}
 </script>
-<script src="theme.js"></script>
 </body>
 </html>

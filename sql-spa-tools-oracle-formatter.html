@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="theme.css">
+<script src="theme.js"></script>
 <title>SQL SPA Tools｜Oracle SQL Formatter</title>
 <style>
 :root{
@@ -852,6 +853,7 @@ function cnt() { const c = { changed: 0, same: 0, failed: 0, skip: 0, written: 0
 /* ----- write ----- */
 async function getSubDir(root, parts, create) { let d = root; for (const p of parts) d = await d.getDirectoryHandle(p, { create }); return d; }
 async function writeBytes(handle, bytes) { const w = await handle.createWritable(); await w.write(bytes); await w.close(); }
+function sameBytes(a, b) { const x = a instanceof Uint8Array ? a : new Uint8Array(a); const y = b instanceof Uint8Array ? b : new Uint8Array(b); if (x.length !== y.length) return false; for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return false; return true; }
 function stamp() { const d = new Date(), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
 async function writeAll() {
   const fs = S.files.filter(f => f.checked && f.status === 'changed');
@@ -866,6 +868,9 @@ async function writeAll() {
     const f = fs[k];
     try {
       const bytes = encodeText(f.out, f.enc, f.bom);
+      // 避免覆蓋掃描後被其他編輯器或同步工具改過的檔案
+      const current = new Uint8Array(await (await f.handle.getFile()).arrayBuffer());
+      if (!sameBytes(current, f.orig)) throw new Error('檔案在預覽後已被外部修改，請重新掃描與預覽');
       if (bakDir) {
         const parts = f.path.split('/'); const nm = parts.pop();
         const d = await getSubDir(bakDir, parts, true); await writeBytes(await d.getFileHandle(nm, { create: true }), f.orig);
@@ -1030,7 +1035,6 @@ loadOpt(); loadRcfg(); renderRules(); refresh(); quick();
 log('Oracle SQL Formatter Studio 已啟動' + (window.showDirectoryPicker ? '' : '；目前瀏覽器不支援寫回，將以唯讀＋ZIP 匯出模式運作'));
 </script>
 <a class="home-link" href="index.html">⌂ 工具入口</a>
-<button id="themeToggle" class="theme-toggle" type="button" aria-pressed="true">☀️ 淺色模式</button>
-<script src="theme.js"></script>
+<button id="themeToggle" class="theme-toggle" type="button">☀️ 淺色模式</button>
 </body>
 </html>

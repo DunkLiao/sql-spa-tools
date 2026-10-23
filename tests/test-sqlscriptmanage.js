@@ -83,4 +83,9 @@ assert.equal(core.mergeBackup({ current: { projects: [project] }, incoming }).pr
 assert.equal(core.normalizeImportMode('overwrite'), 'overwrite');
 assert.equal(core.normalizeImportMode('invalid'), 'merge');
 
+// 版本樹只能選取版本；直接 checkout 會改掉 activeVersionId 並清掉草稿
+assert.equal(html.split("$('versionTree').addEventListener").length - 1, 1, 'version tree must have exactly one click handler');
+assert.doesNotMatch(html, /\$\('versionTree'\)\.addEventListener\([^;]*checkoutVersion/, 'clicking a version must not silently check it out');
+assert.equal(html.split("$('scriptList').addEventListener").length - 1, 1, 'script list must have exactly one click handler');
+
 console.log('SQLScriptManage core contract passed: schema, versions, tree, backup, merge');
